@@ -34,7 +34,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      console.log('Login attempt:', { email, backendUrl });
       const response = await axios.post('/api/auth/login', { email, password });
+      console.log('Login response:', response.data);
       const { token, user } = response.data;
       
       setToken(token);
@@ -43,11 +45,13 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('user', JSON.stringify(user));
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
+      console.log('Login successful, user:', user);
       return { success: true };
     } catch (error) {
+      console.error('Login error:', error);
       return { 
         success: false, 
-        error: error.response?.data?.detail || 'Login failed' 
+        error: error.response?.data?.detail || error.message || 'Login failed' 
       };
     }
   };
