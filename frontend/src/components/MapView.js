@@ -176,12 +176,21 @@ const MapView = () => {
   };
 
   const onMapLoad = () => {
+    console.log('Google Maps loaded successfully!');
     setMapLoaded(true);
   };
 
   const onMapError = (error) => {
     console.error('Google Maps failed to load:', error);
     setMapLoaded(false);
+  };
+
+  const onScriptLoad = () => {
+    console.log('Google Maps script loaded!');
+  };
+
+  const onScriptError = (error) => {
+    console.error('Google Maps script error:', error);
   };
 
   if (loading) {
