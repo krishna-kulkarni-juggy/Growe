@@ -41,39 +41,11 @@ function AppContent() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route 
-              path="/map" 
-              element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <MapView />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/crm" 
-              element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <CRM />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/leases" 
-              element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <LeaseAdmin />
-                </ProtectedRoute>
-              } 
-            />
+            <Route path="/map" element={<MapView />} />
+            <Route path="/crm" element={<CRM />} />
+            <Route path="/leases" element={<LeaseAdmin />} />
             <Route path="/shipper-intake" element={<ShipperIntake />} />
-            <Route 
-              path="/portal" 
-              element={
-                <ProtectedRoute allowedRoles={['3pl_partner']}>
-                  <ClientPortal />
-                </ProtectedRoute>
-              } 
-            />
+            <Route path="/portal" element={<ClientPortal />} />
             <Route path="*" element={<Navigate to="/dashboard" />} />
           </Routes>
         </main>
