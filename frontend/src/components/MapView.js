@@ -246,6 +246,8 @@ const MapView = () => {
               center={center}
               zoom={4}
               options={mapOptions}
+              onLoad={onMapLoad}
+              onUnmount={() => console.log('Map unmounted')}
             >
               {warehouses.map((warehouse) => (
                 <Marker
