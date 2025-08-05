@@ -407,8 +407,191 @@ class GroweBackendTester:
                 self.log_test("Dashboard Stats", False, f"HTTP {response.status_code}")
         except Exception as e:
             self.log_test("Dashboard Stats", False, f"Exception: {str(e)}")
+    def test_google_maps_warehouse_data(self):
+        """Test warehouse endpoints specifically for Google Maps functionality"""
+        print("\n🗺️  Testing Google Maps Warehouse Data Structure")
+        print("-" * 50)
+        
+        # Test GET warehouses without authentication (should work for map display)
+        try:
+            response = requests.get(f"{API_BASE}/warehouses")
+            if response.status_code == 200:
+                warehouses = response.json()
+                self.log_test("GET Warehouses (No Auth)", True, f"Retrieved {len(warehouses)} warehouses for map display")
+                
+                # Validate warehouse data structure for map compatibility
+                if warehouses:
+                    sample_warehouse = warehouses[0]
+                    required_map_fields = ['id', 'name', 'address', 'city', 'state', 'lat', 'lng', 'growe_represented']
+                    
+                    missing_fields = [field for field in required_map_fields if field not in sample_warehouse]
+                    if not missing_fields:
+                        self.log_test("Warehouse Map Data Structure", True, "All required fields present for map display")
+                        
+                        # Validate coordinate data types
+                        lat_valid = isinstance(sample_warehouse.get('lat'), (int, float))
+                        lng_valid = isinstance(sample_warehouse.get('lng'), (int, float))
+                        
+                        if lat_valid and lng_valid:
+                            self.log_test("Warehouse Coordinates", True, f"Valid lat/lng coordinates: {sample_warehouse['lat']}, {sample_warehouse['lng']}")
+                        else:
+                            self.log_test("Warehouse Coordinates", False, f"Invalid coordinate types: lat={type(sample_warehouse.get('lat'))}, lng={type(sample_warehouse.get('lng'))}")
+                            
+                        # Validate coordinate ranges (basic sanity check)
+                        lat = sample_warehouse.get('lat', 0)
+                        lng = sample_warehouse.get('lng', 0)
+                        if -90 <= lat <= 90 and -180 <= lng <= 180:
+                            self.log_test("Coordinate Ranges", True, "Coordinates within valid geographic ranges")
+                        else:
+                            self.log_test("Coordinate Ranges", False, f"Coordinates out of range: lat={lat}, lng={lng}")
+                            
+                    else:
+                        self.log_test("Warehouse Map Data Structure", False, f"Missing required fields: {missing_fields}")
+                else:
+                    self.log_test("Warehouse Map Data Structure", False, "No warehouse data available for testing")
+                    
+            else:
+                self.log_test("GET Warehouses (No Auth)", False, f"HTTP {response.status_code}")
+        except Exception as e:
+            self.log_test("GET Warehouses (No Auth)", False, f"Exception: {str(e)}")
             
-    def run_all_tests(self):
+    def test_google_maps_3pl_data(self):
+        """Test 3PL endpoints specifically for Google Maps functionality"""
+        print("\n🏢 Testing Google Maps 3PL Data Structure")
+        print("-" * 50)
+        
+        # Test GET 3PLs without authentication (should work for map display)
+        try:
+            response = requests.get(f"{API_BASE}/3pls")
+            if response.status_code == 200:
+                threepls = response.json()
+                self.log_test("GET 3PLs (No Auth)", True, f"Retrieved {len(threepls)} 3PL companies for map display")
+                
+                # Validate 3PL data structure for map compatibility
+                if threepls:
+                    sample_3pl = threepls[0]
+                    required_map_fields = ['id', 'company_name', 'primary_contact', 'email', 'phone', 'services', 'regions_covered', 'status']
+                    
+                    missing_fields = [field for field in required_map_fields if field not in sample_3pl]
+                    if not missing_fields:
+                        self.log_test("3PL Map Data Structure", True, "All required fields present for map display")
+                        
+                        # Validate services and regions are lists
+                        services_valid = isinstance(sample_3pl.get('services'), list)
+                        regions_valid = isinstance(sample_3pl.get('regions_covered'), list)
+                        
+                        if services_valid and regions_valid:
+                            self.log_test("3PL List Fields", True, "Services and regions are properly formatted as lists")
+                        else:
+                            self.log_test("3PL List Fields", False, f"Invalid list types: services={type(sample_3pl.get('services'))}, regions={type(sample_3pl.get('regions_covered'))}")
+                            
+                    else:
+                        self.log_test("3PL Map Data Structure", False, f"Missing required fields: {missing_fields}")
+                else:
+                    self.log_test("3PL Map Data Structure", False, "No 3PL data available for testing")
+                    
+            else:
+                self.log_test("GET 3PLs (No Auth)", False, f"HTTP {response.status_code}")
+        except Exception as e:
+            self.log_test("GET 3PLs (No Auth)", False, f"Exception: {str(e)}")
+            
+    def test_warehouse_3pl_relationship(self):
+        """Test the relationship between warehouses and 3PLs for map functionality"""
+        print("\n🔗 Testing Warehouse-3PL Relationship for Map")
+        print("-" * 50)
+        
+        try:
+            # Get both warehouses and 3PLs
+            warehouses_response = requests.get(f"{API_BASE}/warehouses")
+            threepls_response = requests.get(f"{API_BASE}/3pls")
+            
+            if warehouses_response.status_code == 200 and threepls_response.status_code == 200:
+                warehouses = warehouses_response.json()
+                threepls = threepls_response.json()
+                
+                # Create a lookup for 3PLs by ID
+                threepls_by_id = {tpl['id']: tpl for tpl in threepls}
+                
+                # Check if warehouses can be linked to 3PLs
+                linked_count = 0
+                unlinked_count = 0
+                
+                for warehouse in warehouses:
+                    threepl_id = warehouse.get('threepl_id')
+                    if threepl_id and threepl_id in threepls_by_id:
+                        linked_count += 1
+                    else:
+                        unlinked_count += 1
+                        
+                if linked_count > 0:
+                    self.log_test("Warehouse-3PL Linking", True, f"Successfully linked {linked_count} warehouses to 3PLs, {unlinked_count} unlinked")
+                else:
+                    self.log_test("Warehouse-3PL Linking", False, f"No warehouses could be linked to 3PLs")
+                    
+            else:
+                self.log_test("Warehouse-3PL Linking", False, f"Failed to retrieve data: warehouses={warehouses_response.status_code}, 3pls={threepls_response.status_code}")
+                
+        except Exception as e:
+            self.log_test("Warehouse-3PL Linking", False, f"Exception: {str(e)}")
+            
+    def test_map_data_completeness(self):
+        """Test completeness of data for map display"""
+        print("\n📊 Testing Map Data Completeness")
+        print("-" * 50)
+        
+        try:
+            response = requests.get(f"{API_BASE}/warehouses")
+            if response.status_code == 200:
+                warehouses = response.json()
+                
+                if not warehouses:
+                    self.log_test("Map Data Completeness", False, "No warehouse data available")
+                    return
+                    
+                # Check for complete data
+                complete_warehouses = 0
+                incomplete_warehouses = 0
+                
+                for warehouse in warehouses:
+                    required_fields = ['name', 'address', 'city', 'state', 'lat', 'lng']
+                    if all(warehouse.get(field) for field in required_fields):
+                        complete_warehouses += 1
+                    else:
+                        incomplete_warehouses += 1
+                        
+                if complete_warehouses > 0:
+                    self.log_test("Map Data Completeness", True, f"{complete_warehouses} complete warehouses, {incomplete_warehouses} incomplete")
+                else:
+                    self.log_test("Map Data Completeness", False, "No warehouses have complete data for map display")
+                    
+                # Check geographic distribution
+                states = set()
+                for warehouse in warehouses:
+                    if warehouse.get('state'):
+                        states.add(warehouse['state'])
+                        
+                if len(states) > 1:
+                    self.log_test("Geographic Distribution", True, f"Warehouses distributed across {len(states)} states: {', '.join(sorted(states))}")
+                else:
+                    self.log_test("Geographic Distribution", False, f"Limited geographic distribution: {len(states)} states")
+                    
+            else:
+                self.log_test("Map Data Completeness", False, f"HTTP {response.status_code}")
+                
+        except Exception as e:
+            self.log_test("Map Data Completeness", False, f"Exception: {str(e)}")
+            
+    def run_google_maps_tests(self):
+        """Run all Google Maps specific tests"""
+        print("\n🗺️  GOOGLE MAPS BACKEND FUNCTIONALITY TESTS")
+        print("=" * 60)
+        
+        self.test_google_maps_warehouse_data()
+        self.test_google_maps_3pl_data()
+        self.test_warehouse_3pl_relationship()
+        self.test_map_data_completeness()
+        
+        return True
         """Run all backend tests"""
         print("🚀 Starting Growe Logistics Platform Backend Tests")
         print("=" * 60)
