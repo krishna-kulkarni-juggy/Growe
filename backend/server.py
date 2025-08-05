@@ -207,7 +207,7 @@ async def create_3pl(threepl: ThreePL, current_user: dict = Depends(verify_token
         raise HTTPException(status_code=403, detail="Insufficient permissions")
     
     threepl_dict = threepl.dict()
-    threepl_dict["created_at"] = datetime.now().isoformat()
+    threepl_dict["created_at"] = datetime.now()
     threepl_dict["id"] = str(uuid.uuid4())
     
     result = db.three_pls.insert_one(threepl_dict)
