@@ -267,100 +267,73 @@ const MapView = () => {
 
       <div className="relative">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          {/* Success Alert */}
-          <div className="mb-4 p-4 bg-green-50 border-l-4 border-green-400 rounded-r-lg">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-green-800">Google Maps Successfully Enabled!</h3>
-                <div className="mt-2 text-sm text-green-700">
-                  <p>✅ Static Maps API is working • ✅ All warehouse locations displayed on real Google Maps</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Primary: Google Static Maps (Confirmed Working) */}
+          {/* Google Maps with Clickable Markers */}
           <div className="mb-6">
             <div className="text-center mb-3">
-              <h3 className="text-lg font-semibold text-gray-900">🗺️ Live Google Maps with Warehouse Locations</h3>
-              <p className="text-sm text-gray-600">Real-time Google Maps showing all 3PL warehouse locations across the USA</p>
+              <h3 className="text-lg font-semibold text-gray-900">🗺️ 3PL Warehouse Locations</h3>
+              <p className="text-sm text-gray-600">Click markers on the map below for detailed warehouse information</p>
             </div>
-            <div className="text-center">
+            
+            {/* Google Maps with Overlay for Clickable Markers */}
+            <div className="relative mx-auto" style={{maxWidth: '1000px'}}>
               <img 
                 src={`https://maps.googleapis.com/maps/api/staticmap?size=1000x600&zoom=4&center=39.8283,-98.5795&markers=color:blue%7Clabel:G%7Csize:mid%7C34.0522,-118.2437&markers=color:orange%7Clabel:O%7Csize:mid%7C40.7357,-74.1724&markers=color:blue%7Clabel:G%7Csize:mid%7C41.8781,-87.6298&markers=color:orange%7Clabel:O%7Csize:mid%7C32.7767,-96.7970&markers=color:blue%7Clabel:G%7Csize:mid%7C47.6062,-122.3321&markers=color:orange%7Clabel:O%7Csize:mid%7C25.7617,-80.1918&key=${GOOGLE_MAPS_API_KEY}`}
                 alt="Google Maps showing 3PL warehouse locations across the USA"
-                className="rounded-lg shadow-lg border max-w-full h-auto mx-auto block"
-                style={{maxWidth: '1000px', height: 'auto'}}
+                className="rounded-lg shadow-lg border w-full h-auto block"
               />
               
-              {/* Success/Error indicators */}
-              <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
-                <p className="text-sm text-green-700 font-medium">✅ Google Maps loaded with all 6 warehouse locations!</p>
-                <p className="text-xs text-green-600 mt-1">Blue markers (G) = Growe Represented • Orange markers (O) = Growth Opportunities</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Secondary: Interactive Fallback Map */}
-          <div className="mb-4">
-            <div className="text-center mb-3">
-              <h4 className="text-md font-medium text-gray-800">Interactive Warehouse Details</h4>
-              <p className="text-sm text-gray-600">Click markers below for detailed warehouse and 3PL information</p>
-            </div>
-            <div 
-              className="w-full h-80 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg border-2 border-gray-200 relative overflow-hidden"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f3f4f6' fill-opacity='0.3'%3E%3Cpath d='m40 40c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm0-32c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm-32 0c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm0 32c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8z'/%3E%3C/g%3E%3C/svg%3E")`
-              }}
-            >
-              <div className="absolute inset-0 bg-blue-100 opacity-20"></div>
-              
-              {/* USA Map Outline */}
-              <svg 
-                className="absolute inset-0 w-full h-full" 
-                viewBox="0 0 800 320" 
-                style={{ filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.1))' }}
-              >
-                <path 
-                  d="M 40 160 Q 80 120 160 128 L 240 112 Q 320 104 400 112 L 480 120 Q 560 128 600 144 L 600 240 Q 560 256 480 248 L 400 240 Q 320 232 240 240 L 160 248 Q 80 240 40 224 Z" 
-                  fill="rgba(59, 130, 246, 0.15)" 
-                  stroke="rgba(59, 130, 246, 0.4)" 
-                  strokeWidth="1.5"
-                />
-              </svg>
-              
-              {/* Warehouse markers */}
-              {warehouses.map((warehouse, index) => {
-                const x = ((warehouse.lng + 125) / 60) * 800;
-                const y = ((50 - warehouse.lat) / 30) * 320;
+              {/* Clickable Overlay Markers */}
+              {warehouses.map((warehouse) => {
+                // Convert lat/lng to pixel positions on the 1000x600 static map
+                // Google Static Maps uses Web Mercator projection
+                const mapWidth = 1000;
+                const mapHeight = 600;
+                const zoom = 4;
+                
+                // Calculate pixel position for each warehouse
+                const latRad = warehouse.lat * Math.PI / 180;
+                const lngRad = warehouse.lng * Math.PI / 180;
+                const centerLatRad = 39.8283 * Math.PI / 180;
+                const centerLngRad = -98.5795 * Math.PI / 180;
+                
+                // Simple approximation for static map positioning
+                const x = mapWidth / 2 + (lngRad - centerLngRad) * (mapWidth / (2 * Math.PI)) * Math.pow(2, zoom);
+                const y = mapHeight / 2 - (latRad - centerLatRad) * (mapHeight / (2 * Math.PI)) * Math.pow(2, zoom);
                 
                 return (
                   <div
                     key={warehouse.id}
-                    className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all hover:scale-150 hover:z-10 ${
-                      warehouse.growe_represented ? 'text-blue-600' : 'text-orange-500'
-                    }`}
-                    style={{ left: `${x}px`, top: `${y}px` }}
+                    className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer"
+                    style={{ 
+                      left: `${Math.max(0, Math.min(100, (x / mapWidth) * 100))}%`, 
+                      top: `${Math.max(0, Math.min(100, (y / mapHeight) * 100))}%` 
+                    }}
                     onClick={() => handleMarkerClick(warehouse)}
-                    title={`${warehouse.name} - ${warehouse.city}, ${warehouse.state}`}
+                    title={`Click for details: ${warehouse.name}`}
                   >
-                    <div className={`w-5 h-5 rounded-full border-2 border-white shadow-md flex items-center justify-center text-xs font-bold text-white ${
-                      warehouse.growe_represented ? 'bg-blue-600' : 'bg-orange-500'
-                    }`}>
-                      {warehouse.growe_represented ? 'G' : 'O'}
+                    <div className="w-8 h-8 rounded-full bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-200 flex items-center justify-center">
+                      <div className={`w-4 h-4 rounded-full border-2 border-white shadow-lg ${
+                        warehouse.growe_represented ? 'bg-blue-600' : 'bg-orange-500'
+                      }`}></div>
                     </div>
                   </div>
                 );
               })}
-              
-              {/* Map title overlay */}
-              <div className="absolute top-3 left-3 bg-white bg-opacity-95 rounded-md px-2 py-1 shadow-sm">
-                <p className="text-xs font-medium text-gray-700">Click markers for details</p>
+            </div>
+
+            {/* Map Legend */}
+            <div className="mt-4 flex justify-center space-x-6">
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-blue-600 rounded-full mr-2 flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">G</span>
+                </div>
+                <span className="text-sm text-gray-700">Growe Represented (3 locations)</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-orange-500 rounded-full mr-2 flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">O</span>
+                </div>
+                <span className="text-sm text-gray-700">Growth Opportunities (3 locations)</span>
               </div>
             </div>
           </div>
