@@ -244,7 +244,7 @@ async def get_leases():
     return leases
 
 @app.get("/api/leases/expiring")
-async def get_expiring_leases(current_user: dict = Depends(verify_token)):
+async def get_expiring_leases():
     six_months_from_now = datetime.now() + timedelta(days=180)
     expiring_leases = list(db.leases.find({
         "end_date": {"$lte": six_months_from_now},
