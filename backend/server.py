@@ -272,7 +272,6 @@ async def create_shipper_lead(lead: ShipperLead):
     lead_dict["id"] = str(uuid.uuid4())
     
     result = db.shipper_leads.insert_one(lead_dict)
-    lead_dict["id"] = str(result.inserted_id)
     return lead_dict
 
 @app.get("/api/shipper-leads")
