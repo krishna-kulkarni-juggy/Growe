@@ -15,6 +15,8 @@ const MapView = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapError, setMapError] = useState(false);
+  const [scriptLoadTimeout, setScriptLoadTimeout] = useState(false);
 
   // Get API key with multiple fallback methods
   const getApiKey = () => {
