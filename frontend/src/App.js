@@ -16,6 +16,10 @@ import './App.css';
 
 function AppContent() {
   const { user, loading } = useAuth();
+  const [tempUser, setTempUser] = useState(null);
+
+  // For testing - bypass AuthContext temporarily
+  const currentUser = tempUser || user;
 
   if (loading) {
     return (
@@ -25,12 +29,12 @@ function AppContent() {
     );
   }
 
-  if (!user) {
+  if (!currentUser) {
     return (
       <Router>
         <Routes>
           <Route path="/shipper-intake" element={<ShipperIntake />} />
-          <Route path="*" element={<Login />} />
+          <Route path="*" element={<SimpleLogin onLogin={setTempUser} />} />
         </Routes>
       </Router>
     );
