@@ -280,45 +280,50 @@ const MapView = () => {
                 src={`https://maps.googleapis.com/maps/api/staticmap?size=1000x600&zoom=4&center=39.8283,-98.5795&markers=color:blue%7Clabel:G%7Csize:mid%7C34.0522,-118.2437&markers=color:orange%7Clabel:O%7Csize:mid%7C40.7357,-74.1724&markers=color:blue%7Clabel:G%7Csize:mid%7C41.8781,-87.6298&markers=color:orange%7Clabel:O%7Csize:mid%7C32.7767,-96.7970&markers=color:blue%7Clabel:G%7Csize:mid%7C47.6062,-122.3321&markers=color:orange%7Clabel:O%7Csize:mid%7C25.7617,-80.1918&key=${GOOGLE_MAPS_API_KEY}`}
                 alt="Google Maps showing 3PL warehouse locations across the USA"
                 className="rounded-lg shadow-lg border w-full h-auto block"
+                onLoad={() => console.log('Google Maps image loaded successfully')}
+                onError={(e) => {
+                  console.error('Google Maps image failed to load:', e);
+                }}
               />
               
-              {/* Clickable Overlay Markers */}
-              {warehouses.map((warehouse) => {
-                // Convert lat/lng to pixel positions on the 1000x600 static map
-                // Google Static Maps uses Web Mercator projection
-                const mapWidth = 1000;
-                const mapHeight = 600;
-                const zoom = 4;
-                
-                // Calculate pixel position for each warehouse
-                const latRad = warehouse.lat * Math.PI / 180;
-                const lngRad = warehouse.lng * Math.PI / 180;
-                const centerLatRad = 39.8283 * Math.PI / 180;
-                const centerLngRad = -98.5795 * Math.PI / 180;
-                
-                // Simple approximation for static map positioning
-                const x = mapWidth / 2 + (lngRad - centerLngRad) * (mapWidth / (2 * Math.PI)) * Math.pow(2, zoom);
-                const y = mapHeight / 2 - (latRad - centerLatRad) * (mapHeight / (2 * Math.PI)) * Math.pow(2, zoom);
-                
-                return (
-                  <div
-                    key={warehouse.id}
-                    className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer"
-                    style={{ 
-                      left: `${Math.max(0, Math.min(100, (x / mapWidth) * 100))}%`, 
-                      top: `${Math.max(0, Math.min(100, (y / mapHeight) * 100))}%` 
-                    }}
-                    onClick={() => handleMarkerClick(warehouse)}
-                    title={`Click for details: ${warehouse.name}`}
-                  >
-                    <div className="w-8 h-8 rounded-full bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-200 flex items-center justify-center">
-                      <div className={`w-4 h-4 rounded-full border-2 border-white shadow-lg ${
-                        warehouse.growe_represented ? 'bg-blue-600' : 'bg-orange-500'
-                      }`}></div>
+              {/* Simple clickable areas over marker positions */}
+              <div className="absolute top-0 left-0 w-full h-full">
+                {warehouses.map((warehouse) => {
+                  // Simplified positioning based on approximate locations on the map
+                  let left, top;
+                  
+                  // Manual positioning based on the warehouse locations on the 1000x600 map
+                  switch(warehouse.city) {
+                    case 'Los Angeles': left = '12%'; top = '62%'; break;  // Southwest
+                    case 'Seattle': left = '8%'; top = '25%'; break;      // Northwest  
+                    case 'Chicago': left = '62%'; top = '45%'; break;     // Midwest
+                    case 'Dallas': left = '48%'; top = '68%'; break;      // South Central
+                    case 'Newark': left = '82%'; top = '38%'; break;      // Northeast
+                    case 'Miami': left = '84%'; top = '78%'; break;       // Southeast
+                    default: left = '50%'; top = '50%'; break;
+                  }
+                  
+                  return (
+                    <div
+                      key={warehouse.id}
+                      className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer"
+                      style={{ left, top }}
+                      onClick={() => handleMarkerClick(warehouse)}
+                      title={`Click for details: ${warehouse.name}`}
+                    >
+                      <div className="w-10 h-10 rounded-full bg-black bg-opacity-0 hover:bg-blue-200 hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
+                        <div className={`w-6 h-6 rounded-full border-2 border-white shadow-lg ${
+                          warehouse.growe_represented ? 'bg-blue-600' : 'bg-orange-500'
+                        } flex items-center justify-center`}>
+                          <span className="text-white text-xs font-bold">
+                            {warehouse.growe_represented ? 'G' : 'O'}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
 
             {/* Map Legend */}
