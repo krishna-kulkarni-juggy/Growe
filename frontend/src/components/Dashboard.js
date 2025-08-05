@@ -144,12 +144,21 @@ const Dashboard = () => {
         </p>
       </div>
 
-      {/* Stats Cards */}
+      {/* Stats Cards - Now Clickable */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
+          const navigateTo = index === 0 ? '/crm' : 
+                           index === 1 ? '/map' : 
+                           index === 2 ? '/crm' :
+                           index === 3 ? '/leases' : '/shipper-intake';
+          
           return (
-            <div key={index} className="bg-white rounded-lg shadow-md p-6">
+            <a 
+              key={index} 
+              href={navigateTo}
+              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer block"
+            >
               <div className="flex items-center">
                 <div className={`p-3 rounded-full ${stat.color}`}>
                   <Icon className="h-6 w-6 text-white" />
@@ -159,7 +168,10 @@ const Dashboard = () => {
                   <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
                 </div>
               </div>
-            </div>
+              <div className="mt-2 text-xs text-blue-600 hover:text-blue-800">
+                Click to view details →
+              </div>
+            </a>
           );
         })}
       </div>
