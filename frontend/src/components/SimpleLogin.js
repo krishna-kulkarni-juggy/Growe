@@ -8,6 +8,7 @@ const SimpleLogin = ({ onLogin }) => {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
+    alert('Button clicked!'); // This should show if click handler works
     console.log('🔐 Simple login attempt');
     setLoading(true);
     
