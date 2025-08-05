@@ -33,10 +33,12 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = async (email, password) => {
+    console.log('Login function called with:', { email });
     try {
-      console.log('Login attempt:', { email });
+      console.log('Making API request to /api/auth/login');
       const response = await axios.post('/api/auth/login', { email, password });
-      console.log('Login response:', response.data);
+      console.log('Login API response:', response.data);
+      
       const { token, user } = response.data;
       
       setToken(token);
@@ -45,7 +47,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('user', JSON.stringify(user));
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
-      console.log('Login successful, user:', user);
+      console.log('Login successful, user set:', user);
       return { success: true };
     } catch (error) {
       console.error('Login error:', error);
@@ -64,7 +66,7 @@ export const AuthProvider = ({ children }) => {
     delete axios.defaults.headers.common['Authorization'];
   };
 
-  const value = {
+  const contextValue = {
     user,
     token,
     login,
@@ -73,8 +75,10 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: !!user
   };
 
+  console.log('AuthContext value:', contextValue);
+
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );
