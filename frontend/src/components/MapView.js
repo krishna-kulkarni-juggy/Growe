@@ -16,23 +16,6 @@ const MapView = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const mapContainerStyle = {
-    width: '100%',
-    height: '600px'
-  };
-
-  const center = {
-    lat: 39.8283, // Center of USA
-    lng: -98.5795
-  };
-
-  const mapOptions = {
-    zoomControl: true,
-    streetViewControl: false,
-    mapTypeControl: false,
-    fullscreenControl: true,
-  };
-
   useEffect(() => {
     // Demo data since async operations don't work in this environment
     const demoWarehouses = [
@@ -58,6 +41,30 @@ const MapView = () => {
         zip_code: "07102",
         lat: 40.7357,
         lng: -74.1724,
+        growe_represented: false
+      },
+      {
+        id: "3",
+        threepl_id: "1",
+        name: "Midwest Chicago Center", 
+        address: "2345 Logistics Ave",
+        city: "Chicago",
+        state: "IL",
+        zip_code: "60632",
+        lat: 41.8781,
+        lng: -87.6298,
+        growe_represented: true
+      },
+      {
+        id: "4",
+        threepl_id: "2",
+        name: "Texas Dallas Terminal",
+        address: "3456 Freight Rd", 
+        city: "Dallas",
+        state: "TX",
+        zip_code: "75207",
+        lat: 32.7767,
+        lng: -96.7970,
         growe_represented: false
       }
     ];
@@ -96,31 +103,9 @@ const MapView = () => {
     return threePLs.find(tpl => tpl.id === threeplId);
   };
 
-  const handleMarkerClick = (warehouse) => {
+  const handleWarehouseClick = (warehouse) => {
     setSelectedWarehouse(warehouse);
     setSidebarOpen(true);
-  };
-
-  const getMarkerIcon = (warehouse) => {
-    return {
-      url: warehouse.growe_represented 
-        ? 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L22 7L12 12L2 7L12 2Z" fill="#3B82F6" stroke="#ffffff" stroke-width="2"/>
-            <path d="M2 17L12 22L22 17" stroke="#3B82F6" stroke-width="2"/>
-            <path d="M2 12L12 17L22 12" stroke="#3B82F6" stroke-width="2"/>
-          </svg>
-        `)
-        : 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L22 7L12 12L2 7L12 2Z" fill="#F59E0B" stroke="#ffffff" stroke-width="2"/>
-            <path d="M2 17L12 22L22 17" stroke="#F59E0B" stroke-width="2"/>
-            <path d="M2 12L12 17L22 12" stroke="#F59E0B" stroke-width="2"/>
-          </svg>
-        `),
-      scaledSize: new window.google.maps.Size(32, 32),
-      anchor: new window.google.maps.Point(16, 32)
-    };
   };
 
   if (loading) {
@@ -155,122 +140,199 @@ const MapView = () => {
       </div>
 
       <div className="relative">
+        {/* Map Placeholder with Warehouse Markers */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <LoadScript 
-            googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}
-            loadingElement={<div className="h-96 flex items-center justify-center">Loading map...</div>}
-          >
-            <GoogleMap
-              mapContainerStyle={mapContainerStyle}
-              center={center}
-              zoom={4}
-              options={mapOptions}
-            >
-              {warehouses.map((warehouse) => (
-                <Marker
-                  key={warehouse.id}
-                  position={{ lat: warehouse.lat, lng: warehouse.lng }}
-                  onClick={() => handleMarkerClick(warehouse)}
-                  icon={getMarkerIcon(warehouse)}
-                />
-              ))}
-            </GoogleMap>
-          </LoadScript>
+          <div className="h-96 bg-gradient-to-br from-blue-50 to-green-50 relative border-2 border-dashed border-gray-300">
+            {/* Map Background */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-600 mb-2">Interactive Map View</h3>
+                <p className="text-sm text-gray-500 mb-4">Google Maps integration would display here</p>
+                <p className="text-xs text-gray-400">Click warehouse cards below to view details</p>
+              </div>
+            </div>
+
+            {/* Simulated Map Markers */}
+            <div className="absolute top-1/4 left-1/4">
+              <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-lg"></div>
+            </div>
+            <div className="absolute top-1/3 right-1/3">
+              <div className="w-4 h-4 bg-orange-500 rounded-full border-2 border-white shadow-lg"></div>
+            </div>
+            <div className="absolute bottom-1/3 left-1/2">
+              <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-lg"></div>
+            </div>
+            <div className="absolute top-1/2 left-1/3">
+              <div className="w-4 h-4 bg-orange-500 rounded-full border-2 border-white shadow-lg"></div>
+            </div>
+          </div>
         </div>
 
-        {/* Sidebar */}
-        <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Warehouse Details</h3>
-            <button
-              onClick={() => setSidebarOpen(false)}
-              className="p-1 hover:bg-gray-100 rounded"
-            >
-              <X className="h-5 w-5 text-gray-500" />
-            </button>
-          </div>
+        {/* Warehouse List */}
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {warehouses.map((warehouse) => {
+            const threePL = getThreePLInfo(warehouse.threepl_id);
+            return (
+              <div
+                key={warehouse.id}
+                onClick={() => handleWarehouseClick(warehouse)}
+                className={`p-4 rounded-lg border-2 cursor-pointer transition-all hover:shadow-md ${
+                  warehouse.growe_represented 
+                    ? 'border-blue-200 bg-blue-50 hover:border-blue-300' 
+                    : 'border-orange-200 bg-orange-50 hover:border-orange-300'
+                }`}
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1">
+                    <h4 className="font-medium text-gray-900 flex items-center">
+                      <MapPin className="h-4 w-4 mr-2 text-gray-500" />
+                      {warehouse.name}
+                    </h4>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {warehouse.address}<br />
+                      {warehouse.city}, {warehouse.state} {warehouse.zip_code}
+                    </p>
+                  </div>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    warehouse.growe_represented 
+                      ? 'bg-blue-100 text-blue-800' 
+                      : 'bg-orange-100 text-orange-800'
+                  }`}>
+                    {warehouse.growe_represented ? 'Growe Rep.' : 'Not Rep.'}
+                  </span>
+                </div>
 
-          {selectedWarehouse && (
-            <div className="space-y-4">
-              <div className="border-b border-gray-200 pb-4">
-                <h4 className="font-medium text-gray-900 flex items-center">
-                  <MapPin className="h-4 w-4 mr-2 text-gray-500" />
-                  {selectedWarehouse.name}
-                </h4>
-                <p className="text-sm text-gray-600 mt-1">
-                  {selectedWarehouse.address}<br />
-                  {selectedWarehouse.city}, {selectedWarehouse.state} {selectedWarehouse.zip_code}
-                </p>
-                <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium mt-2 ${
-                  selectedWarehouse.growe_represented 
-                    ? 'bg-blue-100 text-blue-800' 
-                    : 'bg-orange-100 text-orange-800'
-                }`}>
-                  {selectedWarehouse.growe_represented ? 'Growe Represented' : 'Not Represented'}
-                </span>
-              </div>
-
-              {(() => {
-                const threePL = getThreePLInfo(selectedWarehouse.threepl_id);
-                return threePL ? (
-                  <div>
-                    <h5 className="font-medium text-gray-900 flex items-center mb-3">
-                      <Building className="h-4 w-4 mr-2 text-gray-500" />
-                      3PL Company
-                    </h5>
-                    <div className="space-y-2">
-                      <p className="font-medium text-gray-900">{threePL.company_name}</p>
-                      <p className="text-sm text-gray-600 flex items-center">
-                        <Mail className="h-3 w-3 mr-1" />
-                        {threePL.email}
-                      </p>
-                      <p className="text-sm text-gray-600 flex items-center">
-                        <Phone className="h-3 w-3 mr-1" />
-                        {threePL.phone}
-                      </p>
-                      <div className="mt-3">
-                        <p className="text-sm font-medium text-gray-700">Services:</p>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {threePL.services?.map((service, index) => (
-                            <span 
-                              key={index}
-                              className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
-                            >
-                              {service}
-                            </span>
-                          ))}
-                        </div>
+                {threePL && (
+                  <div className="mt-3 p-3 bg-white rounded border">
+                    <p className="font-medium text-gray-900 text-sm">{threePL.company_name}</p>
+                    <p className="text-xs text-gray-600 flex items-center mt-1">
+                      <Mail className="h-3 w-3 mr-1" />
+                      {threePL.email}
+                    </p>
+                    <p className="text-xs text-gray-600 flex items-center mt-1">
+                      <Phone className="h-3 w-3 mr-1" />
+                      {threePL.phone}
+                    </p>
+                    <div className="mt-2">
+                      <div className="flex flex-wrap gap-1">
+                        {threePL.services?.slice(0, 2).map((service, index) => (
+                          <span 
+                            key={index}
+                            className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
+                          >
+                            {service}
+                          </span>
+                        ))}
+                        {threePL.services?.length > 2 && (
+                          <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">
+                            +{threePL.services.length - 2} more
+                          </span>
+                        )}
                       </div>
-                      <div className="mt-3">
-                        <p className="text-sm font-medium text-gray-700">Regions Covered:</p>
-                        <p className="text-sm text-gray-600">{threePL.regions_covered?.join(', ')}</p>
-                      </div>
-                      <div className="mt-3">
-                        <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                          threePL.status === 'New' ? 'bg-blue-100 text-blue-800' :
-                          threePL.status === 'Engaged' ? 'bg-yellow-100 text-yellow-800' :
-                          threePL.status === 'Matched' ? 'bg-green-100 text-green-800' :
-                          threePL.status === 'Dormant' ? 'bg-gray-100 text-gray-800' :
-                          'bg-red-100 text-red-800'
-                        }`}>
-                          {threePL.status}
-                        </span>
-                      </div>
-                      {threePL.notes && (
-                        <div className="mt-3">
-                          <p className="text-sm font-medium text-gray-700">Notes:</p>
-                          <p className="text-sm text-gray-600">{threePL.notes}</p>
-                        </div>
-                      )}
                     </div>
                   </div>
-                ) : (
-                  <p className="text-sm text-gray-500">3PL information not available</p>
-                );
-              })()}
-            </div>
-          )}
+                )}
+              </div>
+            );
+          })}
         </div>
+
+        {/* Sidebar for Selected Warehouse */}
+        {selectedWarehouse && sidebarOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setSidebarOpen(false)}>
+            <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-lg p-6 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">Warehouse Details</h3>
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="p-1 hover:bg-gray-100 rounded"
+                >
+                  <X className="h-5 w-5 text-gray-500" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div className="border-b border-gray-200 pb-4">
+                  <h4 className="font-medium text-gray-900 flex items-center">
+                    <MapPin className="h-4 w-4 mr-2 text-gray-500" />
+                    {selectedWarehouse.name}
+                  </h4>
+                  <p className="text-sm text-gray-600 mt-1">
+                    {selectedWarehouse.address}<br />
+                    {selectedWarehouse.city}, {selectedWarehouse.state} {selectedWarehouse.zip_code}
+                  </p>
+                  <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium mt-2 ${
+                    selectedWarehouse.growe_represented 
+                      ? 'bg-blue-100 text-blue-800' 
+                      : 'bg-orange-100 text-orange-800'
+                  }`}>
+                    {selectedWarehouse.growe_represented ? 'Growe Represented' : 'Not Represented'}
+                  </span>
+                </div>
+
+                {(() => {
+                  const threePL = getThreePLInfo(selectedWarehouse.threepl_id);
+                  return threePL ? (
+                    <div>
+                      <h5 className="font-medium text-gray-900 flex items-center mb-3">
+                        <Building className="h-4 w-4 mr-2 text-gray-500" />
+                        3PL Company
+                      </h5>
+                      <div className="space-y-2">
+                        <p className="font-medium text-gray-900">{threePL.company_name}</p>
+                        <p className="text-sm text-gray-600 flex items-center">
+                          <Mail className="h-3 w-3 mr-1" />
+                          {threePL.email}
+                        </p>
+                        <p className="text-sm text-gray-600 flex items-center">
+                          <Phone className="h-3 w-3 mr-1" />
+                          {threePL.phone}
+                        </p>
+                        <div className="mt-3">
+                          <p className="text-sm font-medium text-gray-700">Services:</p>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {threePL.services?.map((service, index) => (
+                              <span 
+                                key={index}
+                                className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
+                              >
+                                {service}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="mt-3">
+                          <p className="text-sm font-medium text-gray-700">Regions Covered:</p>
+                          <p className="text-sm text-gray-600">{threePL.regions_covered?.join(', ')}</p>
+                        </div>
+                        <div className="mt-3">
+                          <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
+                            threePL.status === 'New' ? 'bg-blue-100 text-blue-800' :
+                            threePL.status === 'Engaged' ? 'bg-yellow-100 text-yellow-800' :
+                            threePL.status === 'Matched' ? 'bg-green-100 text-green-800' :
+                            threePL.status === 'Dormant' ? 'bg-gray-100 text-gray-800' :
+                            'bg-red-100 text-red-800'
+                          }`}>
+                            {threePL.status}
+                          </span>
+                        </div>
+                        {threePL.notes && (
+                          <div className="mt-3">
+                            <p className="text-sm font-medium text-gray-700">Notes:</p>
+                            <p className="text-sm text-gray-600">{threePL.notes}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">3PL information not available</p>
+                  );
+                })()}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Summary Stats */}
