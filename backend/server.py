@@ -270,7 +270,7 @@ async def create_lease(lease: Lease, current_user: dict = Depends(verify_token))
     return Lease(**lease_dict)
 
 @app.get("/api/deals")
-async def get_deals(current_user: dict = Depends(verify_token)):
+async def get_deals():
     deals = list(db.deals.find())
     for deal in deals:
         deal["id"] = str(deal["_id"])
