@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import { 
-  BuildingOfficeIcon, 
-  PhoneIcon, 
-  EnvelopeIcon,
-  MapPinIcon,
-  XMarkIcon
+  Building, 
+  Phone, 
+  Mail,
+  MapPin,
+  X
 } from 'lucide-react';
 
 const MapView = () => {
@@ -146,7 +146,7 @@ const MapView = () => {
               onClick={() => setSidebarOpen(false)}
               className="p-1 hover:bg-gray-100 rounded"
             >
-              <XMarkIcon className="h-5 w-5 text-gray-500" />
+              <X className="h-5 w-5 text-gray-500" />
             </button>
           </div>
 
@@ -154,7 +154,7 @@ const MapView = () => {
             <div className="space-y-4">
               <div className="border-b border-gray-200 pb-4">
                 <h4 className="font-medium text-gray-900 flex items-center">
-                  <MapPinIcon className="h-4 w-4 mr-2 text-gray-500" />
+                  <MapPin className="h-4 w-4 mr-2 text-gray-500" />
                   {selectedWarehouse.name}
                 </h4>
                 <p className="text-sm text-gray-600 mt-1">
@@ -175,17 +175,17 @@ const MapView = () => {
                 return threePL ? (
                   <div>
                     <h5 className="font-medium text-gray-900 flex items-center mb-3">
-                      <BuildingOfficeIcon className="h-4 w-4 mr-2 text-gray-500" />
+                      <Building className="h-4 w-4 mr-2 text-gray-500" />
                       3PL Company
                     </h5>
                     <div className="space-y-2">
                       <p className="font-medium text-gray-900">{threePL.company_name}</p>
                       <p className="text-sm text-gray-600 flex items-center">
-                        <EnvelopeIcon className="h-3 w-3 mr-1" />
+                        <Mail className="h-3 w-3 mr-1" />
                         {threePL.email}
                       </p>
                       <p className="text-sm text-gray-600 flex items-center">
-                        <PhoneIcon className="h-3 w-3 mr-1" />
+                        <Phone className="h-3 w-3 mr-1" />
                         {threePL.phone}
                       </p>
                       <div className="mt-3">

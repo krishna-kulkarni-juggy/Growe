@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { 
-  PlusIcon, 
-  BuildingOfficeIcon, 
-  PhoneIcon, 
-  EnvelopeIcon,
-  UserIcon,
-  MapPinIcon,
-  CalendarIcon,
-  DollarSignIcon,
-  XMarkIcon
+  Plus, 
+  Building, 
+  Phone, 
+  Mail,
+  User,
+  MapPin,
+  Calendar,
+  DollarSign,
+  X
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -163,7 +163,7 @@ const CRM = () => {
           onClick={() => setShowDealModal(true)}
           className="btn-primary flex items-center"
         >
-          <PlusIcon className="h-4 w-4 mr-2" />
+          <Plus className="h-4 w-4 mr-2" />
           New Deal
         </button>
       </div>
@@ -210,21 +210,21 @@ const CRM = () => {
 
                               {deal.value && (
                                 <div className="flex items-center text-xs text-gray-600 mb-1">
-                                  <DollarSignIcon className="h-3 w-3 mr-1" />
+                                  <DollarSign className="h-3 w-3 mr-1" />
                                   ${deal.value?.toLocaleString()}
                                 </div>
                               )}
 
                               {deal.expected_close_date && (
                                 <div className="flex items-center text-xs text-gray-600 mb-1">
-                                  <CalendarIcon className="h-3 w-3 mr-1" />
+                                  <Calendar className="h-3 w-3 mr-1" />
                                   {new Date(deal.expected_close_date).toLocaleDateString()}
                                 </div>
                               )}
 
                               {deal.rep_owner && (
                                 <div className="flex items-center text-xs text-gray-600">
-                                  <UserIcon className="h-3 w-3 mr-1" />
+                                  <User className="h-3 w-3 mr-1" />
                                   {deal.rep_owner}
                                 </div>
                               )}
@@ -257,7 +257,7 @@ const CRM = () => {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <div className="flex items-center mb-2">
-                    <BuildingOfficeIcon className="h-5 w-5 text-gray-500 mr-2" />
+                    <Building className="h-5 w-5 text-gray-500 mr-2" />
                     <h3 className="font-semibold text-gray-900">{threepl.company_name}</h3>
                   </div>
                   <p className="text-sm text-gray-600">{threepl.primary_contact}</p>
@@ -275,15 +275,15 @@ const CRM = () => {
 
               <div className="space-y-2 mb-4">
                 <div className="flex items-center text-sm text-gray-600">
-                  <EnvelopeIcon className="h-3 w-3 mr-2" />
+                  <Mail className="h-3 w-3 mr-2" />
                   {threepl.email}
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
-                  <PhoneIcon className="h-3 w-3 mr-2" />
+                  <Phone className="h-3 w-3 mr-2" />
                   {threepl.phone}
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
-                  <MapPinIcon className="h-3 w-3 mr-2" />
+                  <MapPin className="h-3 w-3 mr-2" />
                   {threepl.regions_covered?.join(', ')}
                 </div>
               </div>
@@ -323,7 +323,7 @@ const CRM = () => {
                 onClick={() => setShowDealModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
               >
-                <XMarkIcon className="h-5 w-5 text-gray-500" />
+                <X className="h-5 w-5 text-gray-500" />
               </button>
             </div>
 

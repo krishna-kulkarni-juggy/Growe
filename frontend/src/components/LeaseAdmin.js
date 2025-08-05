@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { 
-  ClockIcon, 
-  CalendarIcon, 
-  BuildingOfficeIcon,
-  DocumentTextIcon,
-  ExclamationTriangleIcon,
-  BellIcon
+  Clock, 
+  Calendar, 
+  Building,
+  FileText,
+  AlertTriangle,
+  Bell
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -127,7 +127,7 @@ const LeaseAdmin = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-blue-500">
-              <DocumentTextIcon className="h-6 w-6 text-white" />
+              <FileText className="h-6 w-6 text-white" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Total Leases</p>
@@ -139,7 +139,7 @@ const LeaseAdmin = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-green-500">
-              <BuildingOfficeIcon className="h-6 w-6 text-white" />
+              <Building className="h-6 w-6 text-white" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Active Leases</p>
@@ -153,7 +153,7 @@ const LeaseAdmin = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-orange-500">
-              <ClockIcon className="h-6 w-6 text-white" />
+              <Clock className="h-6 w-6 text-white" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Expiring Soon</p>
@@ -165,7 +165,7 @@ const LeaseAdmin = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-red-500">
-              <ExclamationTriangleIcon className="h-6 w-6 text-white" />
+              <AlertTriangle className="h-6 w-6 text-white" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Expired</p>
@@ -291,7 +291,7 @@ const LeaseAdmin = () => {
                           onClick={() => sendReminder(lease)}
                           className="text-blue-600 hover:text-blue-900 flex items-center"
                         >
-                          <BellIcon className="h-4 w-4 mr-1" />
+                          <Bell className="h-4 w-4 mr-1" />
                           Send Reminder
                         </button>
                       )}
@@ -306,7 +306,7 @@ const LeaseAdmin = () => {
 
       {filteredLeases.length === 0 && (
         <div className="text-center py-12 bg-white rounded-lg shadow-md mt-6">
-          <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-400" />
+          <FileText className="mx-auto h-12 w-12 text-gray-400" />
           <h3 className="mt-2 text-sm font-medium text-gray-900">No leases found</h3>
           <p className="mt-1 text-sm text-gray-500">
             {filter === 'expiring' 

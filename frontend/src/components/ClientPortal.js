@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import {
-  BuildingOfficeIcon,
-  DocumentTextIcon,
-  InboxIcon,
-  MapPinIcon,
-  CalendarIcon,
-  DollarSignIcon,
-  ClockIcon,
-  ExclamationTriangleIcon
+  Building,
+  FileText,
+  Inbox,
+  MapPin,
+  Calendar,
+  DollarSign,
+  Clock,
+  AlertTriangle
 } from 'lucide-react';
 
 const ClientPortal = () => {
@@ -111,7 +111,7 @@ const ClientPortal = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-blue-500">
-              <BuildingOfficeIcon className="h-6 w-6 text-white" />
+              <Building className="h-6 w-6 text-white" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Warehouses</p>
@@ -123,7 +123,7 @@ const ClientPortal = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-green-500">
-              <DocumentTextIcon className="h-6 w-6 text-white" />
+              <FileText className="h-6 w-6 text-white" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Active Leases</p>
@@ -137,7 +137,7 @@ const ClientPortal = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-orange-500">
-              <ClockIcon className="h-6 w-6 text-white" />
+              <Clock className="h-6 w-6 text-white" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Expiring Soon</p>
@@ -151,7 +151,7 @@ const ClientPortal = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-purple-500">
-              <InboxIcon className="h-6 w-6 text-white" />
+              <Inbox className="h-6 w-6 text-white" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">New Leads</p>
@@ -173,7 +173,7 @@ const ClientPortal = () => {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <h3 className="font-medium text-gray-900 flex items-center">
-                        <MapPinIcon className="h-4 w-4 mr-2 text-gray-500" />
+                        <MapPin className="h-4 w-4 mr-2 text-gray-500" />
                         {warehouse.name}
                       </h3>
                       <p className="text-sm text-gray-600 mt-1">
@@ -240,7 +240,7 @@ const ClientPortal = () => {
 
                     <div className="mt-3 flex items-center justify-between">
                       <div className="flex items-center text-sm text-gray-600">
-                        <CalendarIcon className="h-4 w-4 mr-1" />
+                        <Calendar className="h-4 w-4 mr-1" />
                         Expires: {new Date(lease.end_date).toLocaleDateString()}
                       </div>
                       <div className={`text-sm ${
@@ -258,7 +258,7 @@ const ClientPortal = () => {
                     {status === 'expiring' && (
                       <div className="mt-3 p-2 bg-orange-100 rounded-md">
                         <div className="flex items-center">
-                          <ExclamationTriangleIcon className="h-4 w-4 text-orange-600 mr-2" />
+                          <AlertTriangle className="h-4 w-4 text-orange-600 mr-2" />
                           <p className="text-sm text-orange-800">
                             Lease renewal needed soon. Contact your Growe representative.
                           </p>
@@ -317,7 +317,7 @@ const ClientPortal = () => {
 
                   <div className="mt-3 flex items-center justify-between">
                     <div className="flex items-center text-sm text-gray-600">
-                      <InboxIcon className="h-4 w-4 mr-1" />
+                      <Inbox className="h-4 w-4 mr-1" />
                       Contact: {lead.email} • {lead.phone}
                     </div>
                     <button className="btn-primary text-sm">
@@ -328,7 +328,7 @@ const ClientPortal = () => {
               ))
             ) : (
               <div className="text-center py-8">
-                <InboxIcon className="mx-auto h-12 w-12 text-gray-400" />
+                <Inbox className="mx-auto h-12 w-12 text-gray-400" />
                 <h3 className="mt-2 text-sm font-medium text-gray-900">No leads yet</h3>
                 <p className="mt-1 text-sm text-gray-500">
                   New shipper leads will appear here when they match your capabilities.

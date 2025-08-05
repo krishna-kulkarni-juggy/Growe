@@ -3,12 +3,12 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { 
-  TruckIcon, 
-  MapPinIcon, 
-  PackageIcon,
-  ClockIcon,
-  CheckCircleIcon,
-  CalculatorIcon
+  Truck, 
+  MapPin, 
+  Package,
+  Clock,
+  CheckCircle,
+  Calculator
 } from 'lucide-react';
 
 const ShipperIntake = () => {
@@ -80,7 +80,7 @@ const ShipperIntake = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8 text-center">
           <div>
-            <CheckCircleIcon className="mx-auto h-16 w-16 text-green-500" />
+            <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
             <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
               Request Submitted!
             </h2>
@@ -114,7 +114,7 @@ const ShipperIntake = () => {
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <div className="p-3 bg-blue-600 rounded-full">
-              <TruckIcon className="h-8 w-8 text-white" />
+              <Truck className="h-8 w-8 text-white" />
             </div>
           </div>
           <h1 className="text-3xl font-bold text-gray-900">Find Your Perfect 3PL Partner</h1>
@@ -284,7 +284,7 @@ const ShipperIntake = () => {
                     disabled={!watchedValues.monthly_shipments || calculating}
                     className="btn-secondary flex items-center"
                   >
-                    <CalculatorIcon className="h-4 w-4 mr-2" />
+                    <Calculator className="h-4 w-4 mr-2" />
                     {calculating ? 'Calculating...' : 'Calculate Shipping Cost'}
                   </button>
 
@@ -303,19 +303,19 @@ const ShipperIntake = () => {
               <h3 className="text-lg font-medium text-gray-900 mb-4">Why Choose Growe?</h3>
               <ul className="space-y-3">
                 <li className="flex items-start">
-                  <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" />
                   <span className="text-sm text-gray-700">Vetted 3PL partners nationwide</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" />
                   <span className="text-sm text-gray-700">No commission fees to shippers</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" />
                   <span className="text-sm text-gray-700">Expert guidance throughout</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" />
                   <span className="text-sm text-gray-700">Fast turnaround time</span>
                 </li>
               </ul>
