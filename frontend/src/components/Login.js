@@ -7,8 +7,19 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
-  console.log('useAuth result:', { login });
+  const authContext = useAuth();
+  console.log('Auth context:', authContext);
+  console.log('Login function type:', typeof authContext.login);
+
+  // Test the login function directly
+  useEffect(() => {
+    console.log('Testing login function availability...');
+    if (authContext.login) {
+      console.log('✅ Login function is available');
+    } else {
+      console.log('❌ Login function is NOT available');
+    }
+  }, [authContext.login]);
 
   const handleSubmit = async (e) => {
     console.log('handleSubmit called!');
