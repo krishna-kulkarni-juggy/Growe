@@ -63,7 +63,7 @@ const Navbar = () => {
               to="/shipper-intake"
               className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-green-700 hover:bg-green-50"
             >
-              <InboxIcon className="h-4 w-4 mr-2" />
+              <Inbox className="h-4 w-4 mr-2" />
               Shipper Form
             </Link>
           </div>
