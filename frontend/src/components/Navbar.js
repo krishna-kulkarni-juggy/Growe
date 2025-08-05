@@ -16,11 +16,11 @@ const Navbar = () => {
   const location = useLocation();
 
   const navItems = [
-    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, roles: ['admin', '3pl_partner'] },
-    { name: 'Map View', href: '/map', icon: MapIcon, roles: ['admin'] },
-    { name: 'CRM', href: '/crm', icon: UsersIcon, roles: ['admin'] },
-    { name: 'Lease Admin', href: '/leases', icon: DocumentTextIcon, roles: ['admin'] },
-    { name: 'Client Portal', href: '/portal', icon: UserIcon, roles: ['3pl_partner'] },
+    { name: 'Dashboard', href: '/dashboard', icon: Home, roles: ['admin', '3pl_partner'] },
+    { name: 'Map View', href: '/map', icon: Map, roles: ['admin'] },
+    { name: 'CRM', href: '/crm', icon: Users, roles: ['admin'] },
+    { name: 'Lease Admin', href: '/leases', icon: FileText, roles: ['admin'] },
+    { name: 'Client Portal', href: '/portal', icon: User, roles: ['3pl_partner'] },
   ];
 
   const filteredNavItems = navItems.filter(item => 
