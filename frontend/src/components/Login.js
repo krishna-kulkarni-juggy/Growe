@@ -10,9 +10,11 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form submitted with:', { email, password });
     setLoading(true);
 
     const result = await login(email, password);
+    console.log('Login result:', result);
     
     if (result.success) {
       toast.success('Login successful!');
