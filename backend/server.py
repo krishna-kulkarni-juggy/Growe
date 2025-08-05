@@ -40,6 +40,11 @@ class User(BaseModel):
     role: str  # admin, 3pl_partner, viewer
     company_name: Optional[str] = None
     created_at: Optional[datetime] = None
+    
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat() if v else None
+        }
 
 class UserLogin(BaseModel):
     email: str
@@ -58,6 +63,11 @@ class ThreePL(BaseModel):
     created_at: Optional[datetime] = None
     rep_owner: str = ""
     number_of_locations: int = 0
+    
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat() if v else None
+        }
 
 class Warehouse(BaseModel):
     id: Optional[str] = None
@@ -71,6 +81,11 @@ class Warehouse(BaseModel):
     lng: float
     growe_represented: bool = True
     created_at: Optional[datetime] = None
+    
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat() if v else None
+        }
 
 class Lease(BaseModel):
     id: Optional[str] = None
@@ -85,6 +100,11 @@ class Lease(BaseModel):
     status: str = "Active"  # Active, Expiring, Expired, Renewed
     notes: str = ""
     created_at: Optional[datetime] = None
+    
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat() if v else None
+        }
 
 class Deal(BaseModel):
     id: Optional[str] = None
@@ -96,6 +116,11 @@ class Deal(BaseModel):
     notes: str = ""
     created_at: Optional[datetime] = None
     rep_owner: str = ""
+    
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat() if v else None
+        }
 
 class ShipperLead(BaseModel):
     id: Optional[str] = None
@@ -110,6 +135,11 @@ class ShipperLead(BaseModel):
     matched_3pls: List[str] = []
     status: str = "New"  # New, Matched, Converted, Lost
     created_at: Optional[datetime] = None
+    
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat() if v else None
+        }
 
 # Auth functions
 def hash_password(password: str) -> str:
