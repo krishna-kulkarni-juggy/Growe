@@ -267,6 +267,29 @@ const MapView = () => {
 
       <div className="relative">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          {/* API Key Status Alert */}
+          <div className="mb-4 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-amber-800">Google Maps Configuration Required</h3>
+                <div className="mt-2 text-sm text-amber-700">
+                  <p>The Google Maps API key needs to be configured with proper permissions. Current status:</p>
+                  <ul className="list-disc list-inside mt-1 space-y-1">
+                    <li><strong>Static Maps API:</strong> Not authorized (403 Forbidden)</li>
+                    <li><strong>JavaScript Maps API:</strong> Not accessible (404)</li>
+                    <li><strong>Solution:</strong> Enable "Maps JavaScript API" and "Maps Static API" in Google Cloud Console</li>
+                  </ul>
+                  <p className="mt-2 font-medium">Using interactive fallback map below with all warehouse locations.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Primary Interactive Fallback Map - Always show this first */}
           <div className="relative mb-4">
             <div 
@@ -320,31 +343,27 @@ const MapView = () => {
               {/* Map title overlay */}
               <div className="absolute top-4 left-4 bg-white bg-opacity-95 rounded-lg px-3 py-2 shadow-lg">
                 <h3 className="text-sm font-semibold text-gray-700">Interactive Warehouse Map</h3>
-                <p className="text-xs text-gray-500">Click markers for warehouse details</p>
+                <p className="text-xs text-gray-500">Click markers for warehouse details • Fallback mode active</p>
               </div>
             </div>
           </div>
           
-          {/* Secondary Static Google Maps as additional reference */}
-          <div className="text-center">
-            <p className="text-sm text-gray-600 mb-2 font-medium">
-              Static Google Maps Reference View
-            </p>
-            <img 
-              src={`https://maps.googleapis.com/maps/api/staticmap?size=800x400&zoom=4&center=39.8283,-98.5795&markers=color:blue%7Clabel:G%7C34.0522,-118.2437&markers=color:orange%7Clabel:O%7C40.7357,-74.1724&markers=color:blue%7Clabel:G%7C41.8781,-87.6298&markers=color:orange%7Clabel:O%7C32.7767,-96.7970&markers=color:blue%7Clabel:G%7C47.6062,-122.3321&markers=color:orange%7Clabel:O%7C25.7617,-80.1918&key=${GOOGLE_MAPS_API_KEY}`}
-              alt="Static Google Maps showing warehouse locations"
-              className="rounded-lg shadow-md border max-w-full h-auto"
-              onLoad={() => console.log('Static map loaded successfully')}
-              onError={(e) => {
-                console.warn('Static map failed to load');
-                e.target.style.display = 'none';
-                document.getElementById('static-map-error').style.display = 'block';
-              }}
-            />
-            <div id="static-map-error" style={{display: 'none'}} className="p-4 bg-gray-100 rounded-lg">
-              <p className="text-gray-600">
-                Google Maps is not available. The interactive map above shows all warehouse locations.
-              </p>
+          {/* API Configuration Instructions */}
+          <div className="bg-blue-50 p-4 rounded-lg">
+            <h4 className="text-sm font-medium text-blue-800 mb-2">To Enable Google Maps:</h4>
+            <div className="text-sm text-blue-700 space-y-1">
+              <p><strong>1.</strong> Go to <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="underline">Google Cloud Console</a></p>
+              <p><strong>2.</strong> Navigate to "APIs & Services" → "Library"</p>
+              <p><strong>3.</strong> Enable these APIs:</p>
+              <ul className="list-disc list-inside ml-4">
+                <li>Maps JavaScript API</li>
+                <li>Maps Static API</li>
+              </ul>
+              <p><strong>4.</strong> Add domain restrictions to your API key:</p>
+              <ul className="list-disc list-inside ml-4">
+                <li><code>https://7a0fd8e1-7d57-4e40-8e2f-214f86a66a75.preview.emergentagent.com/*</code></li>
+                <li><code>http://localhost:*/*</code> (for development)</li>
+              </ul>
             </div>
           </div>
         </div>
