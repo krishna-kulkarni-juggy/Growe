@@ -16,6 +16,17 @@ const Login = () => {
     console.log('Testing login function availability...');
     if (authContext.login) {
       console.log('✅ Login function is available');
+      
+      // Test login API call directly after 3 seconds
+      setTimeout(async () => {
+        console.log('🔐 Testing direct login API call...');
+        try {
+          const result = await authContext.login('admin@growe.com', 'admin123');
+          console.log('🎉 Direct login test result:', result);
+        } catch (error) {
+          console.error('❌ Direct login test failed:', error);
+        }
+      }, 3000);
     } else {
       console.log('❌ Login function is NOT available');
     }
