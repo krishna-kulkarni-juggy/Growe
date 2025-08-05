@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Login from './components/Login';
+import SimpleLogin from './components/SimpleLogin';
 import Dashboard from './components/Dashboard';
 import MapView from './components/MapView';
 import CRM from './components/CRM';
