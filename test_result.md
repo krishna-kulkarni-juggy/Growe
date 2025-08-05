@@ -223,10 +223,8 @@ metadata:
 test_plan:
   current_focus:
     - "Navigation System" # Critical role-based access control issue
-    - "Interactive Map View" # Google Maps API key required
   stuck_tasks:
     - "Navigation System" # Role-based access control not enforced
-    - "Interactive Map View" # Missing Google Maps API key
   test_all: true
   test_priority: "high_first"
 
