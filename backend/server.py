@@ -252,7 +252,6 @@ async def create_deal(deal: Deal, current_user: dict = Depends(verify_token)):
     deal_dict["id"] = str(uuid.uuid4())
     
     result = db.deals.insert_one(deal_dict)
-    deal_dict["id"] = str(result.inserted_id)
     return deal_dict
 
 @app.put("/api/deals/{deal_id}")
