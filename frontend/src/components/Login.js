@@ -28,7 +28,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const result = await login(email, password);
+      const result = await authContext.login(email, password);
       console.log('Login result:', result);
       
       if (result.success) {
