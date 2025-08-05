@@ -16,6 +16,22 @@ const MapView = () => {
   const [loading, setLoading] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
 
+  // Get API key with multiple fallback methods
+  const getApiKey = () => {
+    // Try different ways to access environment variables
+    const apiKey = 
+      import.meta.env?.REACT_APP_GOOGLE_MAPS_API_KEY ||
+      process.env?.REACT_APP_GOOGLE_MAPS_API_KEY ||
+      window?.REACT_APP_GOOGLE_MAPS_API_KEY ||
+      'AIzaSyCwnOPgnwvH3Km70Fnxv-SYpZ9_ocOvNKw'; // Direct fallback
+    
+    console.log('API Key found:', apiKey ? 'Yes' : 'No');
+    console.log('API Key value:', apiKey);
+    return apiKey;
+  };
+
+  const GOOGLE_MAPS_API_KEY = getApiKey();
+
   const mapContainerStyle = {
     width: '100%',
     height: '600px'
