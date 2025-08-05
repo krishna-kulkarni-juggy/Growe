@@ -592,6 +592,7 @@ class GroweBackendTester:
         self.test_map_data_completeness()
         
         return True
+    def run_all_tests(self):
         """Run all backend tests"""
         print("🚀 Starting Growe Logistics Platform Backend Tests")
         print("=" * 60)
@@ -611,6 +612,9 @@ class GroweBackendTester:
             self.test_deals_endpoints()
             self.test_shipper_leads_endpoints()
             self.test_dashboard_stats()
+            
+            # Google Maps specific tests
+            self.run_google_maps_tests()
         else:
             print("❌ Authentication failed - skipping protected endpoint tests")
             
