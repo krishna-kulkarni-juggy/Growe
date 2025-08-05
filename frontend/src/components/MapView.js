@@ -14,9 +14,27 @@ const MapView = () => {
   const [selectedWarehouse, setSelectedWarehouse] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [mapLoaded, setMapLoaded] = useState(false);
+
+  const mapContainerStyle = {
+    width: '100%',
+    height: '600px'
+  };
+
+  const center = {
+    lat: 39.8283, // Center of USA
+    lng: -98.5795
+  };
+
+  const mapOptions = {
+    zoomControl: true,
+    streetViewControl: false,
+    mapTypeControl: false,
+    fullscreenControl: true,
+  };
 
   useEffect(() => {
-    // Demo data since async operations don't work in this environment
+    // Demo data with actual US warehouse locations
     const demoWarehouses = [
       {
         id: "1",
@@ -65,6 +83,30 @@ const MapView = () => {
         lat: 32.7767,
         lng: -96.7970,
         growe_represented: false
+      },
+      {
+        id: "5",
+        threepl_id: "1",
+        name: "PNW Seattle Cold Storage",
+        address: "4567 Harbor View Dr",
+        city: "Seattle",
+        state: "WA", 
+        zip_code: "98134",
+        lat: 47.6062,
+        lng: -122.3321,
+        growe_represented: true
+      },
+      {
+        id: "6",
+        threepl_id: "2",
+        name: "Florida Miami Port Facility",
+        address: "8901 Port Access Rd",
+        city: "Miami",
+        state: "FL",
+        zip_code: "33132", 
+        lat: 25.7617,
+        lng: -80.1918,
+        growe_represented: false
       }
     ];
 
@@ -76,9 +118,9 @@ const MapView = () => {
         email: "john@summitlogistics.com",
         phone: "(555) 123-4567",
         services: ["Warehousing", "Fulfillment", "Transportation"],
-        regions_covered: ["California", "Nevada", "Arizona"],
+        regions_covered: ["California", "Nevada", "Arizona", "Washington", "Oregon"],
         status: "Engaged",
-        notes: "Key partner with 5 facilities across the West Coast"
+        notes: "Key partner with facilities across the West Coast"
       },
       {
         id: "2",
@@ -86,10 +128,10 @@ const MapView = () => {
         primary_contact: "Mike Davis",
         email: "mdavis@atlanticsupply.com",
         phone: "(555) 234-5678",
-        services: ["Warehousing", "Cross-docking", "LTL"],
-        regions_covered: ["New York", "New Jersey", "Pennsylvania"],
+        services: ["Warehousing", "Cross-docking", "LTL", "Cold Storage"],
+        regions_covered: ["New York", "New Jersey", "Pennsylvania", "Florida", "Texas"],
         status: "Matched",
-        notes: "Specialized in e-commerce fulfillment"
+        notes: "Specialized in e-commerce fulfillment and cold storage"
       }
     ];
 
@@ -102,9 +144,44 @@ const MapView = () => {
     return threePLs.find(tpl => tpl.id === threeplId);
   };
 
-  const handleWarehouseClick = (warehouse) => {
+  const handleMarkerClick = (warehouse) => {
     setSelectedWarehouse(warehouse);
     setSidebarOpen(true);
+  };
+
+  const getMarkerIcon = (warehouse) => {
+    if (!window.google || !window.google.maps) {
+      return null; // Return null if Google Maps isn't loaded yet
+    }
+
+    return {
+      url: warehouse.growe_represented 
+        ? 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="14" fill="#3B82F6" stroke="#ffffff" stroke-width="3"/>
+            <path d="M16 8L24 13L16 18L8 13L16 8Z" fill="#ffffff"/>
+            <text x="16" y="28" text-anchor="middle" fill="#3B82F6" font-size="8" font-weight="bold">G</text>
+          </svg>
+        `)
+        : 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="14" fill="#F59E0B" stroke="#ffffff" stroke-width="3"/>
+            <path d="M16 8L24 13L16 18L8 13L16 8Z" fill="#ffffff"/>
+            <text x="16" y="28" text-anchor="middle" fill="#F59E0B" font-size="8" font-weight="bold">O</text>
+          </svg>
+        `),
+      scaledSize: new window.google.maps.Size(32, 32),
+      anchor: new window.google.maps.Point(16, 32)
+    };
+  };
+
+  const onMapLoad = () => {
+    setMapLoaded(true);
+  };
+
+  const onMapError = (error) => {
+    console.error('Google Maps failed to load:', error);
+    setMapLoaded(false);
   };
 
   if (loading) {
@@ -124,120 +201,55 @@ const MapView = () => {
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-900">3PL Warehouse Map</h1>
         <p className="text-gray-600 mt-2">
-          Interactive map showing all 3PL warehouse locations across North America
+          Interactive Google Maps showing all 3PL warehouse locations across North America
         </p>
         <div className="flex items-center mt-4 space-x-4">
           <div className="flex items-center">
-            <div className="w-4 h-4 bg-blue-500 rounded mr-2"></div>
-            <span className="text-sm text-gray-600">Growe Represented</span>
+            <div className="w-4 h-4 bg-blue-500 rounded-full mr-2"></div>
+            <span className="text-sm text-gray-600">Growe Represented (G)</span>
           </div>
           <div className="flex items-center">
-            <div className="w-4 h-4 bg-orange-500 rounded mr-2"></div>
-            <span className="text-sm text-gray-600">Not Represented</span>
+            <div className="w-4 h-4 bg-orange-500 rounded-full mr-2"></div>
+            <span className="text-sm text-gray-600">Not Represented (O)</span>
           </div>
         </div>
       </div>
 
       <div className="relative">
-        {/* Map Placeholder with Warehouse Markers */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="h-96 bg-gradient-to-br from-blue-50 to-green-50 relative border-2 border-dashed border-gray-300">
-            {/* Map Background */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-600 mb-2">Interactive Map View</h3>
-                <p className="text-sm text-gray-500 mb-4">Google Maps integration would display here</p>
-                <p className="text-xs text-gray-400">Click warehouse cards below to view details</p>
-              </div>
-            </div>
-
-            {/* Simulated Map Markers */}
-            <div className="absolute top-1/4 left-1/4">
-              <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-lg"></div>
-            </div>
-            <div className="absolute top-1/3 right-1/3">
-              <div className="w-4 h-4 bg-orange-500 rounded-full border-2 border-white shadow-lg"></div>
-            </div>
-            <div className="absolute bottom-1/3 left-1/2">
-              <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-lg"></div>
-            </div>
-            <div className="absolute top-1/2 left-1/3">
-              <div className="w-4 h-4 bg-orange-500 rounded-full border-2 border-white shadow-lg"></div>
-            </div>
-          </div>
-        </div>
-
-        {/* Warehouse List */}
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          {warehouses.map((warehouse) => {
-            const threePL = getThreePLInfo(warehouse.threepl_id);
-            return (
-              <div
-                key={warehouse.id}
-                onClick={() => handleWarehouseClick(warehouse)}
-                className={`p-4 rounded-lg border-2 cursor-pointer transition-all hover:shadow-md ${
-                  warehouse.growe_represented 
-                    ? 'border-blue-200 bg-blue-50 hover:border-blue-300' 
-                    : 'border-orange-200 bg-orange-50 hover:border-orange-300'
-                }`}
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex-1">
-                    <h4 className="font-medium text-gray-900 flex items-center">
-                      <MapPin className="h-4 w-4 mr-2 text-gray-500" />
-                      {warehouse.name}
-                    </h4>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {warehouse.address}<br />
-                      {warehouse.city}, {warehouse.state} {warehouse.zip_code}
-                    </p>
-                  </div>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    warehouse.growe_represented 
-                      ? 'bg-blue-100 text-blue-800' 
-                      : 'bg-orange-100 text-orange-800'
-                  }`}>
-                    {warehouse.growe_represented ? 'Growe Rep.' : 'Not Rep.'}
-                  </span>
+          <LoadScript 
+            googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+            onLoad={onMapLoad}
+            onError={onMapError}
+            loadingElement={
+              <div className="h-96 flex items-center justify-center bg-gray-50">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                  <p className="text-gray-600">Loading Google Maps...</p>
                 </div>
-
-                {threePL && (
-                  <div className="mt-3 p-3 bg-white rounded border">
-                    <p className="font-medium text-gray-900 text-sm">{threePL.company_name}</p>
-                    <p className="text-xs text-gray-600 flex items-center mt-1">
-                      <Mail className="h-3 w-3 mr-1" />
-                      {threePL.email}
-                    </p>
-                    <p className="text-xs text-gray-600 flex items-center mt-1">
-                      <Phone className="h-3 w-3 mr-1" />
-                      {threePL.phone}
-                    </p>
-                    <div className="mt-2">
-                      <div className="flex flex-wrap gap-1">
-                        {threePL.services?.slice(0, 2).map((service, index) => (
-                          <span 
-                            key={index}
-                            className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
-                          >
-                            {service}
-                          </span>
-                        ))}
-                        {threePL.services?.length > 2 && (
-                          <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">
-                            +{threePL.services.length - 2} more
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
-            );
-          })}
+            }
+          >
+            <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              center={center}
+              zoom={4}
+              options={mapOptions}
+            >
+              {warehouses.map((warehouse) => (
+                <Marker
+                  key={warehouse.id}
+                  position={{ lat: warehouse.lat, lng: warehouse.lng }}
+                  onClick={() => handleMarkerClick(warehouse)}
+                  icon={getMarkerIcon(warehouse)}
+                  title={`${warehouse.name} - ${warehouse.city}, ${warehouse.state}`}
+                />
+              ))}
+            </GoogleMap>
+          </LoadScript>
         </div>
 
-        {/* Sidebar for Selected Warehouse */}
+        {/* Sidebar */}
         {selectedWarehouse && sidebarOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setSidebarOpen(false)}>
             <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-lg p-6 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
@@ -347,7 +359,7 @@ const MapView = () => {
           </p>
         </div>
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Growth Opportunities</h3>
+          <h3 className="text-lg font-semibred text-gray-900 mb-2">Growth Opportunities</h3>
           <p className="text-3xl font-bold text-orange-600">
             {warehouses.filter(w => !w.growe_represented).length}
           </p>
