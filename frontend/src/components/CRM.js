@@ -91,34 +91,19 @@ const CRM = () => {
     setLoading(false);
   }, []);
 
-  const handleDragEnd = async (result) => {
+  const handleDragEnd = (result) => {
     if (!result.destination) return;
 
     const { draggableId, destination } = result;
     const dealId = draggableId;
     const newStage = destination.droppableId;
 
-    // Update deal stage locally
+    // Update deal stage locally (async update would go here in real app)
     setDeals(prevDeals => 
       prevDeals.map(deal => 
         deal.id === dealId ? { ...deal, stage: newStage } : deal
       )
     );
-
-    // Update deal stage on backend
-    try {
-      const dealToUpdate = deals.find(deal => deal.id === dealId);
-      await axios.put(`/api/deals/${dealId}`, {
-        ...dealToUpdate,
-        stage: newStage
-      });
-      toast.success('Deal stage updated!');
-    } catch (error) {
-      console.error('Error updating deal:', error);
-      toast.error('Failed to update deal stage');
-      // Revert on error
-      fetchData();
-    }
   };
 
   const getThreePLName = (threeplId) => {
