@@ -248,7 +248,7 @@ async def get_deals(current_user: dict = Depends(verify_token)):
 @app.post("/api/deals")
 async def create_deal(deal: Deal, current_user: dict = Depends(verify_token)):
     deal_dict = deal.dict()
-    deal_dict["created_at"] = datetime.now()
+    deal_dict["created_at"] = datetime.now().isoformat()
     deal_dict["id"] = str(uuid.uuid4())
     
     result = db.deals.insert_one(deal_dict)
