@@ -206,19 +206,32 @@ const MapView = () => {
   const onMapLoad = () => {
     console.log('Google Maps loaded successfully!');
     setMapLoaded(true);
+    setMapError(false);
   };
 
   const onMapError = (error) => {
     console.error('Google Maps failed to load:', error);
     setMapLoaded(false);
+    setMapError(true);
   };
 
   const onScriptLoad = () => {
     console.log('Google Maps script loaded!');
+    // Additional check to ensure the map actually renders
+    setTimeout(() => {
+      if (window.google && window.google.maps) {
+        setMapLoaded(true);
+        setMapError(false);
+      } else {
+        console.warn('Google Maps script loaded but window.google.maps not available');
+        setMapError(true);
+      }
+    }, 1000);
   };
 
   const onScriptError = (error) => {
     console.error('Google Maps script error:', error);
+    setMapError(true);
   };
 
   if (loading) {
