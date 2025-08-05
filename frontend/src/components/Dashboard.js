@@ -144,6 +144,34 @@ const Dashboard = () => {
         </p>
       </div>
 
+      {/* Quick Navigation */}
+      <div className="mb-8">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Navigation</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {[
+            { name: 'Dashboard', href: '/dashboard', icon: '📊', current: true },
+            { name: 'CRM System', href: '/crm', icon: '🏢' },
+            { name: 'Map View', href: '/map', icon: '🗺️' },
+            { name: 'Lease Admin', href: '/leases', icon: '📋' },
+            { name: 'Client Portal', href: '/portal', icon: '👤' },
+            { name: 'Shipper Form', href: '/shipper-intake', icon: '📝' }
+          ].map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              className={`p-4 rounded-lg border-2 text-center transition-all hover:shadow-md ${
+                item.current 
+                  ? 'border-blue-500 bg-blue-50 text-blue-700' 
+                  : 'border-gray-200 bg-white hover:border-blue-300 text-gray-700'
+              }`}
+            >
+              <div className="text-2xl mb-2">{item.icon}</div>
+              <div className="text-sm font-medium">{item.name}</div>
+            </a>
+          ))}
+        </div>
+      </div>
+
       {/* Stats Cards - Now Clickable */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
         {statCards.map((stat, index) => {
