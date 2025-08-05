@@ -3,10 +3,12 @@ import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 
 const Login = () => {
+  console.log('Login component rendered');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
+  console.log('useAuth result:', { login });
 
   const handleSubmit = async (e) => {
     console.log('handleSubmit called!');
