@@ -181,7 +181,6 @@ async def create_3pl(threepl: ThreePL, current_user: dict = Depends(verify_token
     threepl_dict["id"] = str(uuid.uuid4())
     
     result = db.three_pls.insert_one(threepl_dict)
-    threepl_dict["id"] = str(result.inserted_id)
     return threepl_dict
 
 @app.get("/api/warehouses")
