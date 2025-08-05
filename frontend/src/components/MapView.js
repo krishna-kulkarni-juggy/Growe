@@ -228,13 +228,15 @@ const MapView = () => {
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <LoadScript 
             googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-            onLoad={onMapLoad}
-            onError={onMapError}
+            onLoad={onScriptLoad}
+            onError={onScriptError}
+            libraries={[]}
             loadingElement={
               <div className="h-96 flex items-center justify-center bg-gray-50">
                 <div className="text-center">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
                   <p className="text-gray-600">Loading Google Maps...</p>
+                  <p className="text-xs text-gray-500 mt-2">API Key: {process.env.REACT_APP_GOOGLE_MAPS_API_KEY ? 'Present' : 'Missing'}</p>
                 </div>
               </div>
             }
