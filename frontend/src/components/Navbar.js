@@ -80,7 +80,7 @@ const Navbar = () => {
               onClick={logout}
               className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-red-700 hover:bg-red-50"
             >
-              <LogoutIcon className="h-4 w-4 mr-1" />
+              <LogOut className="h-4 w-4 mr-1" />
               Logout
             </button>
           </div>
