@@ -227,7 +227,7 @@ async def create_warehouse(warehouse: Warehouse, current_user: dict = Depends(ve
         raise HTTPException(status_code=403, detail="Insufficient permissions")
     
     warehouse_dict = warehouse.dict()
-    warehouse_dict["created_at"] = datetime.now().isoformat()
+    warehouse_dict["created_at"] = datetime.now()
     warehouse_dict["id"] = str(uuid.uuid4())
     
     result = db.warehouses.insert_one(warehouse_dict)
