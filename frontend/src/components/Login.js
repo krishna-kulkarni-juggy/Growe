@@ -9,17 +9,25 @@ const Login = () => {
   const { login } = useAuth();
 
   const handleSubmit = async (e) => {
+    console.log('handleSubmit called!');
     e.preventDefault();
     console.log('Form submitted with:', { email, password });
     setLoading(true);
 
-    const result = await login(email, password);
-    console.log('Login result:', result);
-    
-    if (result.success) {
-      toast.success('Login successful!');
-    } else {
-      toast.error(result.error);
+    try {
+      const result = await login(email, password);
+      console.log('Login result:', result);
+      
+      if (result.success) {
+        console.log('Login successful!');
+        toast.success('Login successful!');
+      } else {
+        console.log('Login failed:', result.error);
+        toast.error(result.error);
+      }
+    } catch (error) {
+      console.error('Login error in component:', error);
+      toast.error('Login failed');
     }
     
     setLoading(false);
