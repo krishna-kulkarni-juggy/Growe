@@ -298,7 +298,7 @@ async def update_deal(deal_id: str, deal: Deal, current_user: dict = Depends(ver
 @app.post("/api/shipper-leads")
 async def create_shipper_lead(lead: ShipperLead):
     lead_dict = lead.dict()
-    lead_dict["created_at"] = datetime.now().isoformat()
+    lead_dict["created_at"] = datetime.now()
     lead_dict["id"] = str(uuid.uuid4())
     
     result = db.shipper_leads.insert_one(lead_dict)
