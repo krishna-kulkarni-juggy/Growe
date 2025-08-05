@@ -231,7 +231,7 @@ async def create_lease(lease: Lease, current_user: dict = Depends(verify_token))
         raise HTTPException(status_code=403, detail="Insufficient permissions")
     
     lease_dict = lease.dict()
-    lease_dict["created_at"] = datetime.now()
+    lease_dict["created_at"] = datetime.now().isoformat()
     lease_dict["id"] = str(uuid.uuid4())
     
     result = db.leases.insert_one(lease_dict)
