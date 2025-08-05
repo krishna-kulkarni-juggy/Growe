@@ -267,7 +267,7 @@ async def create_lease(lease: Lease, current_user: dict = Depends(verify_token))
     lease_dict["id"] = str(uuid.uuid4())
     
     result = db.leases.insert_one(lease_dict)
-    return lease_dict
+    return Lease(**lease_dict)
 
 @app.get("/api/deals")
 async def get_deals(current_user: dict = Depends(verify_token)):
