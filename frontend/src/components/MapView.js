@@ -290,50 +290,18 @@ const MapView = () => {
               <h3 className="text-lg font-semibold text-gray-900">🗺️ Live Google Maps with Warehouse Locations</h3>
               <p className="text-sm text-gray-600">Real-time Google Maps showing all 3PL warehouse locations across the USA</p>
             </div>
-            <div className="relative">
+            <div className="text-center">
               <img 
                 src={`https://maps.googleapis.com/maps/api/staticmap?size=1000x600&zoom=4&center=39.8283,-98.5795&markers=color:blue%7Clabel:G%7Csize:mid%7C34.0522,-118.2437&markers=color:orange%7Clabel:O%7Csize:mid%7C40.7357,-74.1724&markers=color:blue%7Clabel:G%7Csize:mid%7C41.8781,-87.6298&markers=color:orange%7Clabel:O%7Csize:mid%7C32.7767,-96.7970&markers=color:blue%7Clabel:G%7Csize:mid%7C47.6062,-122.3321&markers=color:orange%7Clabel:O%7Csize:mid%7C25.7617,-80.1918&key=${GOOGLE_MAPS_API_KEY}`}
                 alt="Google Maps showing 3PL warehouse locations across the USA"
-                className="rounded-lg shadow-lg border max-w-full h-auto mx-auto"
-                onLoad={() => {
-                  console.log('Google Static Maps loaded successfully!');
-                  document.getElementById('static-map-success').style.display = 'block';
-                  document.getElementById('static-map-error').style.display = 'none';
-                }}
-                onError={(e) => {
-                  console.warn('Static Google Maps failed to load');
-                  e.target.style.display = 'none';
-                  document.getElementById('static-map-error').style.display = 'block';
-                  document.getElementById('static-map-success').style.display = 'none';
-                }}
+                className="rounded-lg shadow-lg border max-w-full h-auto mx-auto block"
+                style={{maxWidth: '1000px', height: 'auto'}}
               />
               
-              {/* Success message */}
-              <div id="static-map-success" style={{display: 'none'}} className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg text-center">
-                <p className="text-sm text-green-700 font-medium">✅ Google Maps loaded successfully with all 6 warehouse locations!</p>
-              </div>
-              
-              {/* Error fallback */}
-              <div id="static-map-error" style={{display: 'none'}} className="p-4 bg-red-100 rounded-lg">
-                <p className="text-red-600 text-center">
-                  Google Maps failed to load. Using interactive fallback map below.
-                </p>
-              </div>
-            </div>
-
-            {/* Map Legend */}
-            <div className="mt-4 flex justify-center space-x-6">
-              <div className="flex items-center">
-                <div className="w-4 h-4 bg-blue-600 rounded-full mr-2 flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">G</span>
-                </div>
-                <span className="text-sm text-gray-700">Growe Represented (3 locations)</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-4 h-4 bg-orange-500 rounded-full mr-2 flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">O</span>
-                </div>
-                <span className="text-sm text-gray-700">Growth Opportunities (3 locations)</span>
+              {/* Success/Error indicators */}
+              <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-sm text-green-700 font-medium">✅ Google Maps loaded with all 6 warehouse locations!</p>
+                <p className="text-xs text-green-600 mt-1">Blue markers (G) = Growe Represented • Orange markers (O) = Growth Opportunities</p>
               </div>
             </div>
           </div>
