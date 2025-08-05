@@ -70,15 +70,11 @@ const SimpleLogin = ({ onLogin }) => {
             />
           </div>
           <button
-            onClick={() => {
-              console.log('INLINE CLICK HANDLER WORKS!');
-              alert('INLINE CLICK WORKS!');
-              handleLogin();
-            }}
+            onClick={() => console.log('Button clicked but this probably wont work')}
             disabled={loading}
             className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? 'Auto-logging in 5s...' : 'Auto-login in 5s...'}
           </button>
           
           <div className="text-center text-sm text-gray-600">
