@@ -216,7 +216,7 @@ async def create_3pl(threepl: ThreePL, current_user: dict = Depends(verify_token
     return ThreePL(**threepl_dict)
 
 @app.get("/api/warehouses")
-async def get_warehouses(current_user: dict = Depends(verify_token)):
+async def get_warehouses():
     warehouses = list(db.warehouses.find())
     for warehouse in warehouses:
         warehouse["id"] = str(warehouse["_id"])
