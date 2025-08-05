@@ -156,7 +156,17 @@ const MapView = () => {
     setWarehouses(demoWarehouses);
     setThreePLs(demoThreePLs);
     setLoading(false);
-  }, []);
+
+    // Set a timeout to show fallback if Google Maps doesn't load within 10 seconds
+    const timeout = setTimeout(() => {
+      if (!mapLoaded) {
+        console.log('Google Maps load timeout - showing fallback');
+        setScriptLoadTimeout(true);
+      }
+    }, 10000);
+
+    return () => clearTimeout(timeout);
+  }, [mapLoaded]);
 
   const getThreePLInfo = (threeplId) => {
     return threePLs.find(tpl => tpl.id === threeplId);
