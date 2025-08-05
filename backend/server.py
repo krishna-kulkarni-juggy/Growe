@@ -194,7 +194,7 @@ async def login(login_data: UserLogin):
     }
 
 @app.get("/api/3pls")
-async def get_3pls(current_user: dict = Depends(verify_token)):
+async def get_3pls():
     three_pls = list(db.three_pls.find())
     for threepl in three_pls:
         threepl["id"] = str(threepl["_id"])
