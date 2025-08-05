@@ -2,13 +2,13 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { 
-  HomeIcon, 
-  MapIcon, 
-  UsersIcon, 
-  DocumentTextIcon,
-  InboxIcon,
-  LogoutIcon,
-  UserIcon
+  Home, 
+  Map, 
+  Users, 
+  FileText,
+  Inbox,
+  LogOut,
+  User
 } from 'lucide-react';
 
 const Navbar = () => {
