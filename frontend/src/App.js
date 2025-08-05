@@ -16,27 +16,23 @@ import './App.css';
 
 function AppContent() {
   const { user, loading } = useAuth();
-  const [tempUser, setTempUser] = useState(null);
 
-  // For testing - bypass AuthContext temporarily
-  const currentUser = tempUser || user;
+  // EMERGENCY FIX: Bypass login entirely for demo
+  const demoUser = {
+    id: "demo-admin",
+    email: "admin@growe.com", 
+    role: "admin",
+    company_name: "Growe"
+  };
+
+  // Use demo user instead of actual auth
+  const currentUser = demoUser;
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
       </div>
-    );
-  }
-
-  if (!currentUser) {
-    return (
-      <Router>
-        <Routes>
-          <Route path="/shipper-intake" element={<ShipperIntake />} />
-          <Route path="*" element={<SimpleLogin onLogin={setTempUser} />} />
-        </Routes>
-      </Router>
     );
   }
 
