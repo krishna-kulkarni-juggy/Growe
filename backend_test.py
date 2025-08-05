@@ -9,8 +9,8 @@ import json
 from datetime import datetime, timedelta
 import uuid
 
-# Configuration
-BASE_URL = "http://localhost:8001"
+# Configuration - Use production URL from frontend/.env
+BASE_URL = "https://7a0fd8e1-7d57-4e40-8e2f-214f86a66a75.preview.emergentagent.com"
 API_BASE = f"{BASE_URL}/api"
 
 # Test credentials
