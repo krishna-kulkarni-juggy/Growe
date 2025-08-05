@@ -64,7 +64,11 @@ const SimpleLogin = ({ onLogin }) => {
             />
           </div>
           <button
-            onClick={handleLogin}
+            onClick={() => {
+              console.log('INLINE CLICK HANDLER WORKS!');
+              alert('INLINE CLICK WORKS!');
+              handleLogin();
+            }}
             disabled={loading}
             className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
           >
