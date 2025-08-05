@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      console.log('Login attempt:', { email, backendUrl });
+      console.log('Login attempt:', { email });
       const response = await axios.post('/api/auth/login', { email, password });
       console.log('Login response:', response.data);
       const { token, user } = response.data;
