@@ -211,7 +211,9 @@ async def create_3pl(threepl: ThreePL, current_user: dict = Depends(verify_token
     threepl_dict["id"] = str(uuid.uuid4())
     
     result = db.three_pls.insert_one(threepl_dict)
-    return threepl_dict
+    
+    # Return a new ThreePL instance with the data
+    return ThreePL(**threepl_dict)
 
 @app.get("/api/warehouses")
 async def get_warehouses(current_user: dict = Depends(verify_token)):
