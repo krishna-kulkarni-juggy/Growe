@@ -16,56 +16,8 @@ import './App.css';
 
 function AppContent() {
   const { user, loading } = useAuth();
-  const [authSetup, setAuthSetup] = useState(false);
 
-  // EMERGENCY FIX: Setup authentication for demo user
-  useEffect(() => {
-    if (!authSetup) {
-      console.log('Setting up demo authentication...');
-      
-      // Create a valid demo user and token
-      const demoUser = {
-        id: "demo-admin",
-        email: "admin@growe.com", 
-        role: "admin",
-        company_name: "Growe"
-      };
-      
-      // Get a real token by making login API call
-      fetch('http://localhost:8001/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: 'admin@growe.com',
-          password: 'admin123'
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Demo authentication successful:', data);
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        
-        // Set axios default header for all future requests
-        if (window.axios) {
-          window.axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-        }
-        
-        setAuthSetup(true);
-        
-        // Force page reload to reinitialize with proper auth
-        window.location.reload();
-      })
-      .catch(error => {
-        console.error('Demo authentication failed:', error);
-        setAuthSetup(true); // Still proceed to avoid infinite loop
-      });
-    }
-  }, [authSetup]);
-
-  // Demo user for UI rendering
+  // Demo user for the prototype
   const currentUser = {
     id: "demo-admin", 
     email: "admin@growe.com",
@@ -73,11 +25,10 @@ function AppContent() {
     company_name: "Growe"
   };
 
-  if (loading || !authSetup) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
-        <div className="ml-4 text-lg text-gray-600">Setting up demo authentication...</div>
       </div>
     );
   }
