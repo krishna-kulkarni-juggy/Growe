@@ -236,7 +236,7 @@ async def create_warehouse(warehouse: Warehouse, current_user: dict = Depends(ve
     return Warehouse(**warehouse_dict)
 
 @app.get("/api/leases")
-async def get_leases(current_user: dict = Depends(verify_token)):
+async def get_leases():
     leases = list(db.leases.find())
     for lease in leases:
         lease["id"] = str(lease["_id"])
