@@ -13,12 +13,13 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Configure axios defaults
+  // Configure axios defaults and make it globally available
   const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
   axios.defaults.baseURL = backendUrl;
+  window.axios = axios; // Make axios globally available
 
   useEffect(() => {
     const token = localStorage.getItem('token');
