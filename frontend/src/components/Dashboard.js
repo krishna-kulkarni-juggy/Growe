@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import { 
-  BuildingOfficeIcon, 
-  MapPinIcon, 
-  BriefcaseIcon, 
-  ClockIcon,
-  InboxIcon,
-  TrendingUpIcon
+  Building, 
+  MapPin, 
+  Briefcase, 
+  Clock,
+  Inbox,
+  TrendingUp
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
