@@ -20,42 +20,54 @@ const ClientPortal = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchClientData();
-  }, []);
-
-  const fetchClientData = async () => {
-    try {
-      // Get current user's 3PL data
-      const threePLsRes = await axios.get('/api/3pls');
-      const currentThreePL = threePLsRes.data.find(tpl => tpl.email === user.email);
-      
-      if (!currentThreePL) {
-        console.log('3PL not found for user');
-        setLoading(false);
-        return;
+    // Demo data for 3PL partner view
+    const demoWarehouses = [
+      {
+        id: "1",
+        threepl_id: "partner1",
+        name: "Summit LA Distribution Center",
+        address: "1234 Industrial Blvd",
+        city: "Los Angeles", 
+        state: "CA",
+        zip_code: "90021",
+        growe_represented: true
       }
+    ];
 
-      const [warehousesRes, leasesRes, leadsRes] = await Promise.all([
-        axios.get('/api/warehouses'),
-        axios.get('/api/leases'),
-        axios.get('/api/shipper-leads')
-      ]);
+    const demoLeases = [
+      {
+        id: "1",
+        warehouse_id: "1",
+        threepl_id: "partner1",
+        start_date: new Date(Date.now() - 365 * 2 * 24 * 60 * 60 * 1000),
+        end_date: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+        square_footage: 50000,
+        landlord: "Property Group 1",
+        monthly_rent: 25000,
+        status: "Active"
+      }
+    ];
 
-      // Filter data for current 3PL
-      const userWarehouses = warehousesRes.data.filter(w => w.threepl_id === currentThreePL.id);
-      const userLeases = leasesRes.data.filter(l => l.threepl_id === currentThreePL.id);
-      // For demo, show some leads (in real app, this would be filtered by matching algorithm)
-      const userLeads = leadsRes.data.slice(0, 3);
+    const demoLeads = [
+      {
+        id: "1",
+        company_name: "TechStart Electronics",
+        contact_name: "Alex Johnson",
+        email: "alex@techstart.com",
+        phone: "(555) 111-2222",
+        product_type: "Consumer Electronics",
+        regions_needed: ["California", "Texas"],
+        monthly_shipments: 500,
+        urgency: "High",
+        created_at: new Date()
+      }
+    ];
 
-      setWarehouses(userWarehouses);
-      setLeases(userLeases);
-      setLeads(userLeads);
-    } catch (error) {
-      console.error('Error fetching client data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    setWarehouses(demoWarehouses);
+    setLeases(demoLeases); 
+    setLeads(demoLeads);
+    setLoading(false);
+  }, []);
 
   const getDaysUntilExpiration = (endDate) => {
     const today = new Date();
