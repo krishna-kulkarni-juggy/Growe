@@ -111,32 +111,28 @@ const CRM = () => {
     return threepl ? threepl.company_name : 'Unknown Company';
   };
 
-  const handleCreateDeal = async (e) => {
+  const handleCreateDeal = (e) => {
     e.preventDefault();
-    try {
-      const dealData = {
-        ...newDeal,
-        value: parseFloat(newDeal.value) || 0,
-        expected_close_date: newDeal.expected_close_date ? new Date(newDeal.expected_close_date) : null
-      };
+    // Demo implementation - would normally make API call
+    const dealData = {
+      ...newDeal,
+      id: Date.now().toString(),
+      value: parseFloat(newDeal.value) || 0,
+      expected_close_date: newDeal.expected_close_date ? new Date(newDeal.expected_close_date) : null
+    };
 
-      await axios.post('/api/deals', dealData);
-      toast.success('Deal created successfully!');
-      setShowDealModal(false);
-      setNewDeal({
-        threepl_id: '',
-        deal_name: '',
-        stage: 'New',
-        value: '',
-        expected_close_date: '',
-        notes: '',
-        rep_owner: ''
-      });
-      fetchData();
-    } catch (error) {
-      console.error('Error creating deal:', error);
-      toast.error('Failed to create deal');
-    }
+    setDeals(prev => [...prev, dealData]);
+    toast.success('Deal created successfully!');
+    setShowDealModal(false);
+    setNewDeal({
+      threepl_id: '',
+      deal_name: '',
+      stage: 'New',
+      value: '',
+      expected_close_date: '',
+      notes: '',
+      rep_owner: ''
+    });
   };
 
   const getStageColor = (stage) => {
