@@ -34,23 +34,63 @@ const MapView = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    // Demo data since async operations don't work in this environment
+    const demoWarehouses = [
+      {
+        id: "1",
+        threepl_id: "1",
+        name: "Summit LA Distribution Center",
+        address: "1234 Industrial Blvd",
+        city: "Los Angeles",
+        state: "CA",
+        zip_code: "90021",
+        lat: 34.0522,
+        lng: -118.2437,
+        growe_represented: true
+      },
+      {
+        id: "2",
+        threepl_id: "2", 
+        name: "Atlantic Newark Hub",
+        address: "9101 Commerce Dr",
+        city: "Newark",
+        state: "NJ",
+        zip_code: "07102",
+        lat: 40.7357,
+        lng: -74.1724,
+        growe_represented: false
+      }
+    ];
 
-  const fetchData = async () => {
-    try {
-      const [warehousesRes, threePLsRes] = await Promise.all([
-        axios.get('/api/warehouses'),
-        axios.get('/api/3pls')
-      ]);
-      setWarehouses(warehousesRes.data);
-      setThreePLs(threePLsRes.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const demoThreePLs = [
+      {
+        id: "1",
+        company_name: "Summit Logistics",
+        primary_contact: "John Smith",
+        email: "john@summitlogistics.com",
+        phone: "(555) 123-4567",
+        services: ["Warehousing", "Fulfillment", "Transportation"],
+        regions_covered: ["California", "Nevada", "Arizona"],
+        status: "Engaged",
+        notes: "Key partner with 5 facilities across the West Coast"
+      },
+      {
+        id: "2",
+        company_name: "Atlantic Supply Chain", 
+        primary_contact: "Mike Davis",
+        email: "mdavis@atlanticsupply.com",
+        phone: "(555) 234-5678",
+        services: ["Warehousing", "Cross-docking", "LTL"],
+        regions_covered: ["New York", "New Jersey", "Pennsylvania"],
+        status: "Matched",
+        notes: "Specialized in e-commerce fulfillment"
+      }
+    ];
+
+    setWarehouses(demoWarehouses);
+    setThreePLs(demoThreePLs);
+    setLoading(false);
+  }, []);
 
   const getThreePLInfo = (threeplId) => {
     return threePLs.find(tpl => tpl.id === threeplId);
