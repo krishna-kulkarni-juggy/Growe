@@ -3,9 +3,12 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const SimpleLogin = ({ onLogin }) => {
+  console.log('SimpleLogin component rendering...');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  console.log('SimpleLogin state:', { email, password, loading });
 
   const handleLogin = async () => {
     alert('Button clicked!'); // This should show if click handler works
