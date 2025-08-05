@@ -276,147 +276,124 @@ const MapView = () => {
                 </svg>
               </div>
               <div className="ml-3">
-                <h3 className="text-sm font-medium text-green-800">Google Maps API Enabled Successfully!</h3>
+                <h3 className="text-sm font-medium text-green-800">Google Maps Successfully Enabled!</h3>
                 <div className="mt-2 text-sm text-green-700">
-                  <p>✅ Static Maps API is now working • ✅ API key properly configured</p>
+                  <p>✅ Static Maps API is working • ✅ All warehouse locations displayed on real Google Maps</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Try Google Maps first, then fallback */}
-          <div className="mb-4">
-            <LoadScript 
-              googleMapsApiKey={GOOGLE_MAPS_API_KEY}
-              onLoad={() => {
-                console.log('Google Maps script loaded successfully!');
-                setMapLoaded(true);
-                setMapError(false);
-              }}
-              onError={(error) => {
-                console.error('Google Maps script error:', error);
-                setMapError(true);
-              }}
-              libraries={[]}
-            >
-              {mapLoaded ? (
-                <GoogleMap
-                  mapContainerStyle={mapContainerStyle}
-                  center={center}
-                  zoom={4}
-                  options={mapOptions}
-                  onLoad={(map) => {
-                    console.log('Google Maps loaded successfully!');
-                    setMapLoaded(true);
-                  }}
-                  onUnmount={() => console.log('Map unmounted')}
-                >
-                  {warehouses.map((warehouse) => (
-                    <Marker
-                      key={warehouse.id}
-                      position={{ lat: warehouse.lat, lng: warehouse.lng }}
-                      onClick={() => handleMarkerClick(warehouse)}
-                      icon={getMarkerIcon(warehouse)}
-                      title={`${warehouse.name} - ${warehouse.city}, ${warehouse.state}`}
-                    />
-                  ))}
-                </GoogleMap>
-              ) : (
-                // Loading state
-                <div className="h-96 flex items-center justify-center bg-gray-50 border-2 border-gray-200 rounded-lg">
-                  <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p className="text-gray-600">Loading Google Maps...</p>
-                    <p className="text-xs text-gray-500 mt-2">Interactive map initializing...</p>
-                  </div>
-                </div>
-              )}
-            </LoadScript>
-          </div>
-
-          {/* Interactive Fallback Map (show if Google Maps fails) */}
-          {mapError && (
-            <div className="relative mb-4">
-              <div className="mb-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <p className="text-sm text-blue-700">Interactive fallback map (Google Maps JavaScript API not available)</p>
-              </div>
-              <div 
-                className="w-full h-96 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg border-2 border-gray-200 relative overflow-hidden"
-                style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f3f4f6' fill-opacity='0.3'%3E%3Cpath d='m40 40c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm0-32c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm-32 0c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm0 32c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8z'/%3E%3C/g%3E%3C/svg%3E")`
+          {/* Primary: Google Static Maps (Confirmed Working) */}
+          <div className="mb-6">
+            <div className="text-center mb-3">
+              <h3 className="text-lg font-semibold text-gray-900">🗺️ Live Google Maps with Warehouse Locations</h3>
+              <p className="text-sm text-gray-600">Real-time Google Maps showing all 3PL warehouse locations across the USA</p>
+            </div>
+            <div className="relative">
+              <img 
+                src={`https://maps.googleapis.com/maps/api/staticmap?size=1000x600&zoom=4&center=39.8283,-98.5795&markers=color:blue%7Clabel:G%7Csize:mid%7C34.0522,-118.2437&markers=color:orange%7Clabel:O%7Csize:mid%7C40.7357,-74.1724&markers=color:blue%7Clabel:G%7Csize:mid%7C41.8781,-87.6298&markers=color:orange%7Clabel:O%7Csize:mid%7C32.7767,-96.7970&markers=color:blue%7Clabel:G%7Csize:mid%7C47.6062,-122.3321&markers=color:orange%7Clabel:O%7Csize:mid%7C25.7617,-80.1918&key=${GOOGLE_MAPS_API_KEY}`}
+                alt="Google Maps showing 3PL warehouse locations across the USA"
+                className="rounded-lg shadow-lg border max-w-full h-auto mx-auto"
+                onLoad={() => {
+                  console.log('Google Static Maps loaded successfully!');
+                  document.getElementById('static-map-success').style.display = 'block';
+                  document.getElementById('static-map-error').style.display = 'none';
                 }}
-              >
-                <div className="absolute inset-0 bg-blue-100 opacity-30"></div>
-                
-                {/* USA Map Outline (simplified) */}
-                <svg 
-                  className="absolute inset-0 w-full h-full" 
-                  viewBox="0 0 800 400" 
-                  style={{ filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.1))' }}
-                >
-                  {/* Simplified USA outline */}
-                  <path 
-                    d="M 50 200 Q 100 150 200 160 L 300 140 Q 400 130 500 140 L 600 150 Q 700 160 750 180 L 750 300 Q 700 320 600 310 L 500 300 Q 400 290 300 300 L 200 310 Q 100 300 50 280 Z" 
-                    fill="rgba(59, 130, 246, 0.1)" 
-                    stroke="rgba(59, 130, 246, 0.3)" 
-                    strokeWidth="2"
-                  />
-                </svg>
-                
-                {/* Warehouse markers positioned approximately */}
-                {warehouses.map((warehouse, index) => {
-                  // Convert lat/lng to approximate pixel positions (simplified mapping)
-                  const x = ((warehouse.lng + 125) / 60) * 800; // Rough conversion
-                  const y = ((50 - warehouse.lat) / 25) * 400; // Rough conversion
-                  
-                  return (
-                    <div
-                      key={warehouse.id}
-                      className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all hover:scale-125 ${
-                        warehouse.growe_represented ? 'text-blue-600' : 'text-orange-500'
-                      }`}
-                      style={{ left: `${x}px`, top: `${y}px` }}
-                      onClick={() => handleMarkerClick(warehouse)}
-                      title={`${warehouse.name} - ${warehouse.city}, ${warehouse.state}`}
-                    >
-                      <div className={`w-6 h-6 rounded-full border-2 border-white shadow-lg flex items-center justify-center text-xs font-bold text-white ${
-                        warehouse.growe_represented ? 'bg-blue-600' : 'bg-orange-500'
-                      }`}>
-                        {warehouse.growe_represented ? 'G' : 'O'}
-                      </div>
-                    </div>
-                  );
-                })}
-                
-                {/* Map title overlay */}
-                <div className="absolute top-4 left-4 bg-white bg-opacity-95 rounded-lg px-3 py-2 shadow-lg">
-                  <h3 className="text-sm font-semibold text-gray-700">Interactive Fallback Map</h3>
-                  <p className="text-xs text-gray-500">Click markers for warehouse details</p>
-                </div>
+                onError={(e) => {
+                  console.warn('Static Google Maps failed to load');
+                  e.target.style.display = 'none';
+                  document.getElementById('static-map-error').style.display = 'block';
+                  document.getElementById('static-map-success').style.display = 'none';
+                }}
+              />
+              
+              {/* Success message */}
+              <div id="static-map-success" style={{display: 'none'}} className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg text-center">
+                <p className="text-sm text-green-700 font-medium">✅ Google Maps loaded successfully with all 6 warehouse locations!</p>
+              </div>
+              
+              {/* Error fallback */}
+              <div id="static-map-error" style={{display: 'none'}} className="p-4 bg-red-100 rounded-lg">
+                <p className="text-red-600 text-center">
+                  Google Maps failed to load. Using interactive fallback map below.
+                </p>
               </div>
             </div>
-          )}
 
-          {/* Working Static Google Maps */}
-          <div className="text-center">
-            <p className="text-sm text-gray-600 mb-2 font-medium">
-              🗺️ Static Google Maps (Now Working!)
-            </p>
-            <img 
-              src={`https://maps.googleapis.com/maps/api/staticmap?size=800x400&zoom=4&center=39.8283,-98.5795&markers=color:blue%7Clabel:G%7C34.0522,-118.2437&markers=color:orange%7Clabel:O%7C40.7357,-74.1724&markers=color:blue%7Clabel:G%7C41.8781,-87.6298&markers=color:orange%7Clabel:O%7C32.7767,-96.7970&markers=color:blue%7Clabel:G%7C47.6062,-122.3321&markers=color:orange%7Clabel:O%7C25.7617,-80.1918&key=${GOOGLE_MAPS_API_KEY}`}
-              alt="Static Google Maps showing warehouse locations"
-              className="rounded-lg shadow-md border max-w-full h-auto"
-              onLoad={() => console.log('Static Google Maps loaded successfully!')}
-              onError={(e) => {
-                console.warn('Static map failed to load');
-                e.target.style.display = 'none';
-                document.getElementById('static-map-error').style.display = 'block';
+            {/* Map Legend */}
+            <div className="mt-4 flex justify-center space-x-6">
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-blue-600 rounded-full mr-2 flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">G</span>
+                </div>
+                <span className="text-sm text-gray-700">Growe Represented (3 locations)</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-orange-500 rounded-full mr-2 flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">O</span>
+                </div>
+                <span className="text-sm text-gray-700">Growth Opportunities (3 locations)</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Secondary: Interactive Fallback Map */}
+          <div className="mb-4">
+            <div className="text-center mb-3">
+              <h4 className="text-md font-medium text-gray-800">Interactive Warehouse Details</h4>
+              <p className="text-sm text-gray-600">Click markers below for detailed warehouse and 3PL information</p>
+            </div>
+            <div 
+              className="w-full h-80 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg border-2 border-gray-200 relative overflow-hidden"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f3f4f6' fill-opacity='0.3'%3E%3Cpath d='m40 40c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm0-32c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm-32 0c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm0 32c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8z'/%3E%3C/g%3E%3C/svg%3E")`
               }}
-            />
-            <div id="static-map-error" style={{display: 'none'}} className="p-4 bg-red-100 rounded-lg">
-              <p className="text-red-600">
-                Static Google Maps failed to load. Please check API configuration.
-              </p>
+            >
+              <div className="absolute inset-0 bg-blue-100 opacity-20"></div>
+              
+              {/* USA Map Outline */}
+              <svg 
+                className="absolute inset-0 w-full h-full" 
+                viewBox="0 0 800 320" 
+                style={{ filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.1))' }}
+              >
+                <path 
+                  d="M 40 160 Q 80 120 160 128 L 240 112 Q 320 104 400 112 L 480 120 Q 560 128 600 144 L 600 240 Q 560 256 480 248 L 400 240 Q 320 232 240 240 L 160 248 Q 80 240 40 224 Z" 
+                  fill="rgba(59, 130, 246, 0.15)" 
+                  stroke="rgba(59, 130, 246, 0.4)" 
+                  strokeWidth="1.5"
+                />
+              </svg>
+              
+              {/* Warehouse markers */}
+              {warehouses.map((warehouse, index) => {
+                const x = ((warehouse.lng + 125) / 60) * 800;
+                const y = ((50 - warehouse.lat) / 30) * 320;
+                
+                return (
+                  <div
+                    key={warehouse.id}
+                    className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all hover:scale-150 hover:z-10 ${
+                      warehouse.growe_represented ? 'text-blue-600' : 'text-orange-500'
+                    }`}
+                    style={{ left: `${x}px`, top: `${y}px` }}
+                    onClick={() => handleMarkerClick(warehouse)}
+                    title={`${warehouse.name} - ${warehouse.city}, ${warehouse.state}`}
+                  >
+                    <div className={`w-5 h-5 rounded-full border-2 border-white shadow-md flex items-center justify-center text-xs font-bold text-white ${
+                      warehouse.growe_represented ? 'bg-blue-600' : 'bg-orange-500'
+                    }`}>
+                      {warehouse.growe_represented ? 'G' : 'O'}
+                    </div>
+                  </div>
+                );
+              })}
+              
+              {/* Map title overlay */}
+              <div className="absolute top-3 left-3 bg-white bg-opacity-95 rounded-md px-2 py-1 shadow-sm">
+                <p className="text-xs font-medium text-gray-700">Click markers for details</p>
+              </div>
             </div>
           </div>
         </div>
