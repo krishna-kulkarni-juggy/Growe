@@ -9,6 +9,7 @@ import LeaseAdmin from './components/LeaseAdmin';
 import ShipperIntake from './components/ShipperIntake';
 import ClientPortal from './components/ClientPortal';
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import './App.css';
 
