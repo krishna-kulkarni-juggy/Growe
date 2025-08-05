@@ -304,7 +304,7 @@ async def create_shipper_lead(lead: ShipperLead):
     lead_dict["id"] = str(uuid.uuid4())
     
     result = db.shipper_leads.insert_one(lead_dict)
-    return lead_dict
+    return ShipperLead(**lead_dict)
 
 @app.get("/api/shipper-leads")
 async def get_shipper_leads(current_user: dict = Depends(verify_token)):
