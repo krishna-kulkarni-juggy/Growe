@@ -44,31 +44,31 @@ const Dashboard = () => {
     {
       title: 'Total 3PLs',
       value: stats.total_3pls || 0,
-      icon: BuildingOfficeIcon,
+      icon: Building,
       color: 'bg-blue-500'
     },
     {
       title: 'Warehouses',
       value: stats.total_warehouses || 0,
-      icon: MapPinIcon,
+      icon: MapPin,
       color: 'bg-green-500'
     },
     {
       title: 'Active Deals',
       value: stats.active_deals || 0,
-      icon: BriefcaseIcon,
+      icon: Briefcase,
       color: 'bg-purple-500'
     },
     {
       title: 'Expiring Leases',
       value: stats.expiring_leases || 0,
-      icon: ClockIcon,
+      icon: Clock,
       color: 'bg-orange-500'
     },
     {
       title: 'New Leads',
       value: stats.new_leads || 0,
-      icon: InboxIcon,
+      icon: Inbox,
       color: 'bg-pink-500'
     }
   ];
