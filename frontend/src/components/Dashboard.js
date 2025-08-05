@@ -214,29 +214,43 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Recent Activity */}
+      {/* Recent Activity - Now Clickable */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Shipper Leads</h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900">Recent Shipper Leads</h3>
+            <a 
+              href="/shipper-intake" 
+              className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+            >
+              View All →
+            </a>
+          </div>
           <div className="space-y-4">
             {recentLeads.length > 0 ? (
               recentLeads.map((lead) => (
-                <div key={lead.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
-                  <div>
-                    <p className="font-medium text-gray-900">{lead.company_name}</p>
-                    <p className="text-sm text-gray-600">{lead.product_type}</p>
-                    <p className="text-xs text-gray-500">
-                      {lead.regions_needed?.join(', ')} • {lead.monthly_shipments} shipments/month
-                    </p>
+                <a
+                  key={lead.id}
+                  href="/shipper-intake"
+                  className="block p-3 border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium text-gray-900">{lead.company_name}</p>
+                      <p className="text-sm text-gray-600">{lead.product_type}</p>
+                      <p className="text-xs text-gray-500">
+                        {lead.regions_needed?.join(', ')} • {lead.monthly_shipments} shipments/month
+                      </p>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      lead.urgency === 'High' ? 'bg-red-100 text-red-800' :
+                      lead.urgency === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-green-100 text-green-800'
+                    }`}>
+                      {lead.urgency}
+                    </span>
                   </div>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    lead.urgency === 'High' ? 'bg-red-100 text-red-800' :
-                    lead.urgency === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-green-100 text-green-800'
-                  }`}>
-                    {lead.urgency}
-                  </span>
-                </div>
+                </a>
               ))
             ) : (
               <p className="text-gray-500 text-center py-4">No recent leads</p>
@@ -245,27 +259,41 @@ const Dashboard = () => {
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Expiring Leases</h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900">Expiring Leases</h3>
+            <a 
+              href="/leases" 
+              className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+            >
+              View All →
+            </a>
+          </div>
           <div className="space-y-4">
             {expiringLeases.length > 0 ? (
               expiringLeases.map((lease) => (
-                <div key={lease.id} className="flex items-center justify-between p-3 border border-orange-200 rounded-lg bg-orange-50">
-                  <div>
-                    <p className="font-medium text-gray-900">Warehouse #{lease.warehouse_id}</p>
-                    <p className="text-sm text-gray-600">{lease.landlord}</p>
-                    <p className="text-xs text-gray-500">
-                      {lease.square_footage?.toLocaleString()} sq ft • ${lease.monthly_rent?.toLocaleString()}/month
-                    </p>
+                <a
+                  key={lease.id}
+                  href="/leases"
+                  className="block p-3 border border-orange-200 rounded-lg bg-orange-50 hover:bg-orange-100 transition-colors cursor-pointer"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium text-gray-900">Warehouse #{lease.warehouse_id}</p>
+                      <p className="text-sm text-gray-600">{lease.landlord}</p>
+                      <p className="text-xs text-gray-500">
+                        {lease.square_footage?.toLocaleString()} sq ft • ${lease.monthly_rent?.toLocaleString()}/month
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-medium text-orange-800">
+                        Expires: {new Date(lease.end_date).toLocaleDateString()}
+                      </p>
+                      <span className="inline-block px-2 py-1 bg-orange-200 text-orange-800 rounded text-xs font-medium">
+                        {Math.ceil((new Date(lease.end_date) - new Date()) / (1000 * 60 * 60 * 24))} days
+                      </span>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-orange-800">
-                      Expires: {new Date(lease.end_date).toLocaleDateString()}
-                    </p>
-                    <span className="inline-block px-2 py-1 bg-orange-200 text-orange-800 rounded text-xs font-medium">
-                      {Math.ceil((new Date(lease.end_date) - new Date()) / (1000 * 60 * 60 * 24))} days
-                    </span>
-                  </div>
-                </div>
+                </a>
               ))
             ) : (
               <p className="text-gray-500 text-center py-4">No expiring leases</p>
