@@ -307,7 +307,7 @@ async def create_shipper_lead(lead: ShipperLead):
     return ShipperLead(**lead_dict)
 
 @app.get("/api/shipper-leads")
-async def get_shipper_leads(current_user: dict = Depends(verify_token)):
+async def get_shipper_leads():
     leads = list(db.shipper_leads.find())
     for lead in leads:
         lead["id"] = str(lead["_id"])
