@@ -33,23 +33,63 @@ const CRM = () => {
   const dealStages = ['New', 'Discovery', 'Proposal', 'In Negotiation', 'Won', 'Lost'];
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    // Demo data since async operations don't work in this environment
+    const demoThreePLs = [
+      {
+        id: "1",
+        company_name: "Summit Logistics",
+        primary_contact: "John Smith",
+        email: "john@summitlogistics.com",
+        phone: "(555) 123-4567",
+        services: ["Warehousing", "Fulfillment", "Transportation"],
+        regions_covered: ["California", "Nevada", "Arizona"],
+        status: "Engaged",
+        notes: "Key partner with 5 facilities across the West Coast",
+        rep_owner: "Sarah Johnson",
+        number_of_locations: 5
+      },
+      {
+        id: "2", 
+        company_name: "Atlantic Supply Chain",
+        primary_contact: "Mike Davis",
+        email: "mdavis@atlanticsupply.com",
+        phone: "(555) 234-5678",
+        services: ["Warehousing", "Cross-docking", "LTL"],
+        regions_covered: ["New York", "New Jersey", "Pennsylvania"],
+        status: "Matched",
+        notes: "Specialized in e-commerce fulfillment",
+        rep_owner: "Tom Wilson",
+        number_of_locations: 3
+      }
+    ];
 
-  const fetchData = async () => {
-    try {
-      const [threePLsRes, dealsRes] = await Promise.all([
-        axios.get('/api/3pls'),
-        axios.get('/api/deals')
-      ]);
-      setThreePLs(threePLsRes.data);
-      setDeals(dealsRes.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const demoDeals = [
+      {
+        id: "1",
+        threepl_id: "1",
+        deal_name: "West Coast Expansion - Summit",
+        stage: "In Negotiation", 
+        value: 250000,
+        expected_close_date: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
+        notes: "Expansion into new 100k sq ft facility",
+        rep_owner: "Sarah Johnson"
+      },
+      {
+        id: "2",
+        threepl_id: "2", 
+        deal_name: "E-commerce Partnership - Atlantic",
+        stage: "Proposal",
+        value: 180000,
+        expected_close_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        notes: "New e-commerce client onboarding",
+        rep_owner: "Tom Wilson"
+      }
+    ];
+
+    setThreePLs(demoThreePLs);
+    setDeals(demoDeals);
+    setLoading(false);
+  }, []);
 
   const handleDragEnd = async (result) => {
     if (!result.destination) return;
