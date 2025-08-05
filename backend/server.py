@@ -233,7 +233,7 @@ async def create_warehouse(warehouse: Warehouse, current_user: dict = Depends(ve
     warehouse_dict["id"] = str(uuid.uuid4())
     
     result = db.warehouses.insert_one(warehouse_dict)
-    return warehouse_dict
+    return Warehouse(**warehouse_dict)
 
 @app.get("/api/leases")
 async def get_leases(current_user: dict = Depends(verify_token)):
