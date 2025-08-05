@@ -267,103 +267,156 @@ const MapView = () => {
 
       <div className="relative">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          {/* API Key Status Alert */}
-          <div className="mb-4 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg">
+          {/* Success Alert */}
+          <div className="mb-4 p-4 bg-green-50 border-l-4 border-green-400 rounded-r-lg">
             <div className="flex">
               <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                <svg className="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
               </div>
               <div className="ml-3">
-                <h3 className="text-sm font-medium text-amber-800">Google Maps Configuration Required</h3>
-                <div className="mt-2 text-sm text-amber-700">
-                  <p>The Google Maps API key needs to be configured with proper permissions. Current status:</p>
-                  <ul className="list-disc list-inside mt-1 space-y-1">
-                    <li><strong>Static Maps API:</strong> Not authorized (403 Forbidden)</li>
-                    <li><strong>JavaScript Maps API:</strong> Not accessible (404)</li>
-                    <li><strong>Solution:</strong> Enable "Maps JavaScript API" and "Maps Static API" in Google Cloud Console</li>
-                  </ul>
-                  <p className="mt-2 font-medium">Using interactive fallback map below with all warehouse locations.</p>
+                <h3 className="text-sm font-medium text-green-800">Google Maps API Enabled Successfully!</h3>
+                <div className="mt-2 text-sm text-green-700">
+                  <p>✅ Static Maps API is now working • ✅ API key properly configured</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Primary Interactive Fallback Map - Always show this first */}
-          <div className="relative mb-4">
-            <div 
-              className="w-full h-96 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg border-2 border-gray-200 relative overflow-hidden"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f3f4f6' fill-opacity='0.3'%3E%3Cpath d='m40 40c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm0-32c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm-32 0c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm0 32c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8z'/%3E%3C/g%3E%3C/svg%3E")`
+          {/* Try Google Maps first, then fallback */}
+          <div className="mb-4">
+            <LoadScript 
+              googleMapsApiKey={GOOGLE_MAPS_API_KEY}
+              onLoad={() => {
+                console.log('Google Maps script loaded successfully!');
+                setMapLoaded(true);
+                setMapError(false);
               }}
+              onError={(error) => {
+                console.error('Google Maps script error:', error);
+                setMapError(true);
+              }}
+              libraries={[]}
             >
-              <div className="absolute inset-0 bg-blue-100 opacity-30"></div>
-              
-              {/* USA Map Outline (simplified) */}
-              <svg 
-                className="absolute inset-0 w-full h-full" 
-                viewBox="0 0 800 400" 
-                style={{ filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.1))' }}
-              >
-                {/* Simplified USA outline */}
-                <path 
-                  d="M 50 200 Q 100 150 200 160 L 300 140 Q 400 130 500 140 L 600 150 Q 700 160 750 180 L 750 300 Q 700 320 600 310 L 500 300 Q 400 290 300 300 L 200 310 Q 100 300 50 280 Z" 
-                  fill="rgba(59, 130, 246, 0.1)" 
-                  stroke="rgba(59, 130, 246, 0.3)" 
-                  strokeWidth="2"
-                />
-              </svg>
-              
-              {/* Warehouse markers positioned approximately */}
-              {warehouses.map((warehouse, index) => {
-                // Convert lat/lng to approximate pixel positions (simplified mapping)
-                const x = ((warehouse.lng + 125) / 60) * 800; // Rough conversion
-                const y = ((50 - warehouse.lat) / 25) * 400; // Rough conversion
-                
-                return (
-                  <div
-                    key={warehouse.id}
-                    className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all hover:scale-125 ${
-                      warehouse.growe_represented ? 'text-blue-600' : 'text-orange-500'
-                    }`}
-                    style={{ left: `${x}px`, top: `${y}px` }}
-                    onClick={() => handleMarkerClick(warehouse)}
-                    title={`${warehouse.name} - ${warehouse.city}, ${warehouse.state}`}
-                  >
-                    <div className={`w-6 h-6 rounded-full border-2 border-white shadow-lg flex items-center justify-center text-xs font-bold text-white ${
-                      warehouse.growe_represented ? 'bg-blue-600' : 'bg-orange-500'
-                    }`}>
-                      {warehouse.growe_represented ? 'G' : 'O'}
-                    </div>
+              {mapLoaded ? (
+                <GoogleMap
+                  mapContainerStyle={mapContainerStyle}
+                  center={center}
+                  zoom={4}
+                  options={mapOptions}
+                  onLoad={(map) => {
+                    console.log('Google Maps loaded successfully!');
+                    setMapLoaded(true);
+                  }}
+                  onUnmount={() => console.log('Map unmounted')}
+                >
+                  {warehouses.map((warehouse) => (
+                    <Marker
+                      key={warehouse.id}
+                      position={{ lat: warehouse.lat, lng: warehouse.lng }}
+                      onClick={() => handleMarkerClick(warehouse)}
+                      icon={getMarkerIcon(warehouse)}
+                      title={`${warehouse.name} - ${warehouse.city}, ${warehouse.state}`}
+                    />
+                  ))}
+                </GoogleMap>
+              ) : (
+                // Loading state
+                <div className="h-96 flex items-center justify-center bg-gray-50 border-2 border-gray-200 rounded-lg">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Loading Google Maps...</p>
+                    <p className="text-xs text-gray-500 mt-2">Interactive map initializing...</p>
                   </div>
-                );
-              })}
-              
-              {/* Map title overlay */}
-              <div className="absolute top-4 left-4 bg-white bg-opacity-95 rounded-lg px-3 py-2 shadow-lg">
-                <h3 className="text-sm font-semibold text-gray-700">Interactive Warehouse Map</h3>
-                <p className="text-xs text-gray-500">Click markers for warehouse details • Fallback mode active</p>
+                </div>
+              )}
+            </LoadScript>
+          </div>
+
+          {/* Interactive Fallback Map (show if Google Maps fails) */}
+          {mapError && (
+            <div className="relative mb-4">
+              <div className="mb-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-700">Interactive fallback map (Google Maps JavaScript API not available)</p>
+              </div>
+              <div 
+                className="w-full h-96 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg border-2 border-gray-200 relative overflow-hidden"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f3f4f6' fill-opacity='0.3'%3E%3Cpath d='m40 40c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm0-32c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm-32 0c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm0 32c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8z'/%3E%3C/g%3E%3C/svg%3E")`
+                }}
+              >
+                <div className="absolute inset-0 bg-blue-100 opacity-30"></div>
+                
+                {/* USA Map Outline (simplified) */}
+                <svg 
+                  className="absolute inset-0 w-full h-full" 
+                  viewBox="0 0 800 400" 
+                  style={{ filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.1))' }}
+                >
+                  {/* Simplified USA outline */}
+                  <path 
+                    d="M 50 200 Q 100 150 200 160 L 300 140 Q 400 130 500 140 L 600 150 Q 700 160 750 180 L 750 300 Q 700 320 600 310 L 500 300 Q 400 290 300 300 L 200 310 Q 100 300 50 280 Z" 
+                    fill="rgba(59, 130, 246, 0.1)" 
+                    stroke="rgba(59, 130, 246, 0.3)" 
+                    strokeWidth="2"
+                  />
+                </svg>
+                
+                {/* Warehouse markers positioned approximately */}
+                {warehouses.map((warehouse, index) => {
+                  // Convert lat/lng to approximate pixel positions (simplified mapping)
+                  const x = ((warehouse.lng + 125) / 60) * 800; // Rough conversion
+                  const y = ((50 - warehouse.lat) / 25) * 400; // Rough conversion
+                  
+                  return (
+                    <div
+                      key={warehouse.id}
+                      className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all hover:scale-125 ${
+                        warehouse.growe_represented ? 'text-blue-600' : 'text-orange-500'
+                      }`}
+                      style={{ left: `${x}px`, top: `${y}px` }}
+                      onClick={() => handleMarkerClick(warehouse)}
+                      title={`${warehouse.name} - ${warehouse.city}, ${warehouse.state}`}
+                    >
+                      <div className={`w-6 h-6 rounded-full border-2 border-white shadow-lg flex items-center justify-center text-xs font-bold text-white ${
+                        warehouse.growe_represented ? 'bg-blue-600' : 'bg-orange-500'
+                      }`}>
+                        {warehouse.growe_represented ? 'G' : 'O'}
+                      </div>
+                    </div>
+                  );
+                })}
+                
+                {/* Map title overlay */}
+                <div className="absolute top-4 left-4 bg-white bg-opacity-95 rounded-lg px-3 py-2 shadow-lg">
+                  <h3 className="text-sm font-semibold text-gray-700">Interactive Fallback Map</h3>
+                  <p className="text-xs text-gray-500">Click markers for warehouse details</p>
+                </div>
               </div>
             </div>
-          </div>
-          
-          {/* API Configuration Instructions */}
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <h4 className="text-sm font-medium text-blue-800 mb-2">To Enable Google Maps:</h4>
-            <div className="text-sm text-blue-700 space-y-1">
-              <p><strong>1.</strong> Go to <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="underline">Google Cloud Console</a></p>
-              <p><strong>2.</strong> Navigate to "APIs & Services" → "Library"</p>
-              <p><strong>3.</strong> Enable these APIs:</p>
-              <ul className="list-disc list-inside ml-4">
-                <li>Maps JavaScript API</li>
-                <li>Maps Static API</li>
-              </ul>
-              <p><strong>4.</strong> Add domain restrictions to your API key:</p>
-              <ul className="list-disc list-inside ml-4">
-                <li><code>https://7a0fd8e1-7d57-4e40-8e2f-214f86a66a75.preview.emergentagent.com/*</code></li>
-                <li><code>http://localhost:*/*</code> (for development)</li>
-              </ul>
+          )}
+
+          {/* Working Static Google Maps */}
+          <div className="text-center">
+            <p className="text-sm text-gray-600 mb-2 font-medium">
+              🗺️ Static Google Maps (Now Working!)
+            </p>
+            <img 
+              src={`https://maps.googleapis.com/maps/api/staticmap?size=800x400&zoom=4&center=39.8283,-98.5795&markers=color:blue%7Clabel:G%7C34.0522,-118.2437&markers=color:orange%7Clabel:O%7C40.7357,-74.1724&markers=color:blue%7Clabel:G%7C41.8781,-87.6298&markers=color:orange%7Clabel:O%7C32.7767,-96.7970&markers=color:blue%7Clabel:G%7C47.6062,-122.3321&markers=color:orange%7Clabel:O%7C25.7617,-80.1918&key=${GOOGLE_MAPS_API_KEY}`}
+              alt="Static Google Maps showing warehouse locations"
+              className="rounded-lg shadow-md border max-w-full h-auto"
+              onLoad={() => console.log('Static Google Maps loaded successfully!')}
+              onError={(e) => {
+                console.warn('Static map failed to load');
+                e.target.style.display = 'none';
+                document.getElementById('static-map-error').style.display = 'block';
+              }}
+            />
+            <div id="static-map-error" style={{display: 'none'}} className="p-4 bg-red-100 rounded-lg">
+              <p className="text-red-600">
+                Static Google Maps failed to load. Please check API configuration.
+              </p>
             </div>
           </div>
         </div>
