@@ -21,16 +21,17 @@ export const AuthProvider = ({ children }) => {
   axios.defaults.baseURL = backendUrl;
 
   useEffect(() => {
-    if (token) {
+    const token = localStorage.getItem('token');
+    const userData = localStorage.getItem('user');
+    
+    if (token && userData) {
+      console.log('Setting up authentication from localStorage...');
+      setToken(token);
+      setUser(JSON.parse(userData));
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      // You could validate the token here
-      const userData = localStorage.getItem('user');
-      if (userData) {
-        setUser(JSON.parse(userData));
-      }
     }
     setLoading(false);
-  }, [token]);
+  }, []);
 
   const login = async (email, password) => {
     console.log('Login function called with:', { email });
