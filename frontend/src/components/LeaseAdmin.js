@@ -839,10 +839,27 @@ Date: ${new Date().toLocaleDateString()}
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">Lease Document</p>
-                      <div className="flex items-center">
-                        <FileText className="h-4 w-4 mr-2 text-blue-600" />
-                        <p className="font-medium text-blue-600">{selectedLease.lease_agreement?.document_name}</p>
-                        <Download className="h-4 w-4 ml-2 text-gray-400" />
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <FileText className="h-4 w-4 mr-2 text-blue-600" />
+                          <p className="font-medium text-blue-600">{selectedLease.lease_agreement?.document_name}</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <button
+                            onClick={() => downloadLeaseAgreement(selectedLease)}
+                            className="p-1 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded"
+                            title="Download Lease Agreement"
+                          >
+                            <Download className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => printLeaseAgreement(selectedLease)}
+                            className="p-1 text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded"
+                            title="Print Lease Agreement"
+                          >
+                            <Printer className="h-4 w-4" />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
