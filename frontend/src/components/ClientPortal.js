@@ -9,7 +9,11 @@ import {
   Calendar,
   DollarSign,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  TrendingUp,
+  ExternalLink,
+  Newspaper,
+  ArrowRight
 } from 'lucide-react';
 
 const ClientPortal = () => {
