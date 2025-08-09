@@ -959,15 +959,23 @@ Date: ${new Date().toLocaleDateString()}
               <div className="mt-6 flex justify-end space-x-3">
                 <button
                   onClick={() => setShowLeaseModal(false)}
-                  className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
+                  className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
                 >
                   Close
                 </button>
                 <button
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center"
+                  onClick={() => printLeaseAgreement(selectedLease)}
+                  className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 flex items-center transition-colors"
+                >
+                  <Printer className="h-4 w-4 mr-2" />
+                  Print
+                </button>
+                <button
+                  onClick={() => downloadLeaseAgreement(selectedLease)}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center transition-colors"
                 >
                   <Download className="h-4 w-4 mr-2" />
-                  Download PDF
+                  Download
                 </button>
               </div>
             </div>
