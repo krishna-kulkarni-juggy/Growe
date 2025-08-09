@@ -27,7 +27,7 @@ const LeaseAdmin = () => {
   const [showLeaseModal, setShowLeaseModal] = useState(false);
 
   useEffect(() => {
-    // Demo data since async operations don't work in this environment
+    // Enhanced demo data with lease agreements and summaries
     const demoLeases = [
       {
         id: "1",
@@ -40,7 +40,48 @@ const LeaseAdmin = () => {
         landlord: "Property Group 1",
         monthly_rent: 25000,
         status: "Active",
-        notes: "Standard warehouse lease"
+        notes: "Standard warehouse lease",
+        lease_agreement: {
+          document_name: "Summit_LA_Warehouse_Lease_2022.pdf",
+          summary: {
+            key_terms: [
+              "3-year initial term with automatic 2-year renewal option",
+              "Annual rent escalation of 3% starting Year 2",
+              "Tenant responsible for utilities, maintenance, and property taxes",
+              "90-day notice required for lease termination",
+              "Option to expand to adjacent 25,000 sq ft space"
+            ],
+            action_items: [
+              {
+                type: "renewal_notice",
+                description: "Provide renewal decision notice to landlord",
+                due_date: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
+                priority: "high",
+                status: "pending"
+              },
+              {
+                type: "insurance_renewal",
+                description: "Update liability insurance certificate",
+                due_date: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
+                priority: "medium",
+                status: "pending"
+              },
+              {
+                type: "maintenance_inspection",
+                description: "Annual facility maintenance inspection",
+                due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+                priority: "low",
+                status: "pending"
+              }
+            ],
+            financial_summary: {
+              total_annual_cost: 300000,
+              escalation_rate: "3% annually",
+              deposit_amount: 50000,
+              additional_fees: ["Property tax", "Utilities", "Maintenance"]
+            }
+          }
+        }
       },
       {
         id: "2", 
@@ -53,7 +94,88 @@ const LeaseAdmin = () => {
         landlord: "Industrial Properties LLC",
         monthly_rent: 35000,
         status: "Active",
-        notes: "Prime location with good access"
+        notes: "Prime location with good access",
+        lease_agreement: {
+          document_name: "Atlantic_Newark_Industrial_Lease_2021.pdf",
+          summary: {
+            key_terms: [
+              "5-year fixed term with no early termination clause",
+              "Fixed rent for first 2 years, then 2.5% annual increases",
+              "Landlord covers structural maintenance and roof repairs",
+              "Tenant has right of first refusal on adjacent properties",
+              "Includes 50 dedicated parking spaces and truck dock access"
+            ],
+            action_items: [
+              {
+                type: "rent_review",
+                description: "Annual rent adjustment calculation review",
+                due_date: new Date(Date.now() + 120 * 24 * 60 * 60 * 1000),
+                priority: "medium",
+                status: "pending"
+              },
+              {
+                type: "hvac_maintenance",
+                description: "Quarterly HVAC system maintenance",
+                due_date: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+                priority: "high",
+                status: "pending"
+              }
+            ],
+            financial_summary: {
+              total_annual_cost: 420000,
+              escalation_rate: "2.5% after Year 2",
+              deposit_amount: 70000,
+              additional_fees: ["Utilities", "Interior maintenance", "Security"]
+            }
+          }
+        }
+      },
+      {
+        id: "3",
+        warehouse_id: "wh3",
+        threepl_id: "tpl1",
+        start_date: new Date(Date.now() - 365 * 1 * 24 * 60 * 60 * 1000), // 1 year ago
+        end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+        renewal_date: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15 days from now
+        square_footage: 40000,
+        landlord: "Chicago Industrial Partners",
+        monthly_rent: 18000,
+        status: "Active",
+        notes: "Short-term lease with expansion potential",
+        lease_agreement: {
+          document_name: "Chicago_Logistics_Hub_Lease_2023.pdf",
+          summary: {
+            key_terms: [
+              "2-year initial term with month-to-month option after",
+              "Base rent plus percentage of revenue over $1M annually",
+              "Shared loading dock facilities with other tenants",
+              "60-day notice required for termination",
+              "Option to lease additional 20,000 sq ft in same complex"
+            ],
+            action_items: [
+              {
+                type: "renewal_decision",
+                description: "URGENT: Make renewal decision for expiring lease",
+                due_date: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+                priority: "critical",
+                status: "pending"
+              },
+              {
+                type: "revenue_report",
+                description: "Submit annual revenue report for rent calculation",
+                due_date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
+                priority: "high",
+                status: "pending"
+              }
+            ],
+            financial_summary: {
+              total_annual_cost: 216000,
+              escalation_rate: "Revenue-based adjustment",
+              deposit_amount: 36000,
+              additional_fees: ["Revenue percentage", "Shared dock fees", "Utilities"]
+            }
+          }
+        }
       }
     ];
 
@@ -69,6 +191,12 @@ const LeaseAdmin = () => {
         name: "Atlantic Newark Hub", 
         city: "Newark",
         state: "NJ"
+      },
+      {
+        id: "wh3",
+        name: "Chicago Logistics Hub",
+        city: "Chicago", 
+        state: "IL"
       }
     ];
 
