@@ -157,10 +157,11 @@ const MapView = () => {
     setThreePLs(demoThreePLs);
     setLoading(false);
 
-    // Set a timeout to show fallback if Google Maps doesn't load within 10 seconds
+    // Set a timeout to fall back to static map if interactive map doesn't load within 10 seconds
     const timeout = setTimeout(() => {
       if (!mapLoaded) {
-        console.log('Google Maps load timeout - showing fallback');
+        console.log('Interactive Google Maps timeout - falling back to static map');
+        setMapError(true);
         setScriptLoadTimeout(true);
       }
     }, 10000);
