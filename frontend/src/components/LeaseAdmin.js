@@ -507,16 +507,48 @@ const LeaseAdmin = () => {
                         {status.charAt(0).toUpperCase() + status.slice(1)}
                       </span>
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="space-y-1">
+                        {lease.lease_agreement?.summary?.action_items?.slice(0, 2).map((item, index) => (
+                          <div key={index} className={`text-xs px-2 py-1 rounded-full border ${getPriorityColor(item.priority)}`}>
+                            {item.type === 'renewal_notice' && '🔄'}
+                            {item.type === 'renewal_decision' && '⚠️'}
+                            {item.type === 'insurance_renewal' && '🛡️'}
+                            {item.type === 'maintenance_inspection' && '🔧'}
+                            {item.type === 'rent_review' && '💰'}
+                            {item.type === 'hvac_maintenance' && '🌡️'}
+                            {item.type === 'revenue_report' && '📊'}
+                            <span className="ml-1">
+                              {item.description.length > 25 ? item.description.substring(0, 25) + '...' : item.description}
+                            </span>
+                          </div>
+                        ))}
+                        {lease.lease_agreement?.summary?.action_items?.length > 2 && (
+                          <div className="text-xs text-gray-500">
+                            +{lease.lease_agreement.summary.action_items.length - 2} more
+                          </div>
+                        )}
+                      </div>
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      {(status === 'expiring' || status === 'expired') && (
+                      <div className="flex space-x-2">
                         <button
-                          onClick={() => sendReminder(lease)}
+                          onClick={() => viewLeaseDetails(lease)}
                           className="text-blue-600 hover:text-blue-900 flex items-center"
                         >
-                          <Bell className="h-4 w-4 mr-1" />
-                          Send Reminder
+                          <Eye className="h-4 w-4 mr-1" />
+                          View Details
                         </button>
-                      )}
+                        {(status === 'expiring' || status === 'expired') && (
+                          <button
+                            onClick={() => sendReminder(lease)}
+                            className="text-orange-600 hover:text-orange-900 flex items-center"
+                          >
+                            <Bell className="h-4 w-4 mr-1" />
+                            Send Reminder
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );
