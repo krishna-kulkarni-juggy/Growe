@@ -458,6 +458,159 @@ const ClientPortal = () => {
             )}
           </div>
         </div>
+
+        {/* Industry News Section */}
+        <div className="bg-white rounded-lg shadow mb-6">
+          <div className="p-6 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <Newspaper className="h-6 w-6 text-blue-600 mr-2" />
+                <h2 className="text-xl font-semibold text-gray-900">3PL Industry News</h2>
+              </div>
+              <div className="flex items-center text-sm text-gray-500">
+                <TrendingUp className="h-4 w-4 mr-1" />
+                Latest trends & opportunities
+              </div>
+            </div>
+          </div>
+          
+          <div className="p-6">
+            {/* Trending News */}
+            <div className="mb-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                <span className="bg-red-100 text-red-800 text-xs font-medium px-2 py-1 rounded-full mr-2">
+                  🔥 TRENDING
+                </span>
+                Hot Topics
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {industryNews.filter(news => news.trending).slice(0, 2).map((news) => (
+                  <div key={news.id} className="border border-orange-200 rounded-lg p-4 bg-orange-50 hover:bg-orange-100 transition-colors">
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="px-2 py-1 bg-orange-200 text-orange-800 text-xs font-medium rounded-full">
+                        {news.category}
+                      </span>
+                      <div className="text-xs text-gray-500 flex items-center">
+                        <Clock className="h-3 w-3 mr-1" />
+                        {news.read_time}
+                      </div>
+                    </div>
+                    <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2">
+                      {news.title}
+                    </h4>
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                      {news.summary}
+                    </p>
+                    <div className="flex items-center justify-between text-xs text-gray-500">
+                      <span>{news.source}</span>
+                      <span>{new Date(news.published_date).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* All News Feed */}
+            <div>
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Latest News Feed</h3>
+              <div className="max-h-96 overflow-y-auto space-y-3 pr-2">
+                {industryNews.map((news) => (
+                  <div key={news.id} className={`border rounded-lg p-4 hover:bg-gray-50 transition-colors cursor-pointer ${
+                    news.trending ? 'border-orange-200 bg-orange-25' : 'border-gray-200'
+                  }`}>
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center space-x-2">
+                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                          news.category === 'Market Trends' ? 'bg-blue-100 text-blue-800' :
+                          news.category === 'Technology' ? 'bg-green-100 text-green-800' :
+                          news.category === 'Infrastructure' ? 'bg-purple-100 text-purple-800' :
+                          news.category === 'Sustainability' ? 'bg-emerald-100 text-emerald-800' :
+                          news.category === 'Specialized Storage' ? 'bg-indigo-100 text-indigo-800' :
+                          news.category === 'Labor Market' ? 'bg-yellow-100 text-yellow-800' :
+                          news.category === 'International' ? 'bg-pink-100 text-pink-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {news.category}
+                        </span>
+                        {news.trending && (
+                          <span className="bg-red-100 text-red-800 text-xs font-medium px-1.5 py-0.5 rounded-full">
+                            🔥
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-xs text-gray-500 flex items-center">
+                        <Clock className="h-3 w-3 mr-1" />
+                        {news.read_time}
+                      </div>
+                    </div>
+                    
+                    <h4 className="font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+                      {news.title}
+                    </h4>
+                    
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                      {news.summary}
+                    </p>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-xs text-gray-500">
+                        <Newspaper className="h-3 w-3 mr-1" />
+                        <span className="font-medium">{news.source}</span>
+                        <span className="mx-2">•</span>
+                        <span>{new Date(news.published_date).toLocaleDateString()}</span>
+                      </div>
+                      <button className="text-blue-600 hover:text-blue-800 text-xs font-medium flex items-center">
+                        Read More
+                        <ArrowRight className="h-3 w-3 ml-1" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* News Categories Filter */}
+            <div className="mt-6 border-t pt-6">
+              <h4 className="text-sm font-medium text-gray-900 mb-3">Popular Categories</h4>
+              <div className="flex flex-wrap gap-2">
+                {['Market Trends', 'Technology', 'Infrastructure', 'Sustainability', 'Labor Market'].map((category) => (
+                  <button
+                    key={category}
+                    className="px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+                  >
+                    {category} ({industryNews.filter(news => news.category === category).length})
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Original Quick Actions Section */}
+        <div className="bg-white rounded-lg shadow">
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-900">Quick Actions</h2>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left">
+                <FileText className="h-6 w-6 text-blue-600 mb-2" />
+                <h3 className="font-medium text-gray-900">Download Lease Documents</h3>
+                <p className="text-sm text-gray-600">Access all your lease agreements</p>
+              </button>
+              <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left">
+                <Calendar className="h-6 w-6 text-green-600 mb-2" />
+                <h3 className="font-medium text-gray-900">Schedule Inspection</h3>
+                <p className="text-sm text-gray-600">Book facility maintenance visits</p>
+              </button>
+              <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left">
+                <Inbox className="h-6 w-6 text-purple-600 mb-2" />
+                <h3 className="font-medium text-gray-900">Contact Support</h3>
+                <p className="text-sm text-gray-600">Get help from Growe team</p>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
