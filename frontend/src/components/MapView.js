@@ -225,7 +225,7 @@ const MapView = () => {
     setThreePLs(demoThreePLs);
     setLoading(false);
 
-    // Load Google Maps with custom loader
+    // Load Google Maps with custom loader (shorter timeout for faster fallback)
     loadGoogleMapsScript(GOOGLE_MAPS_API_KEY)
       .then((maps) => {
         console.log('Google Maps loaded successfully!');
@@ -238,6 +238,17 @@ const MapView = () => {
         setMapError(true);
         setMapLoaded(false);
       });
+
+    // Additional failsafe timeout - fall back to static map after 8 seconds
+    const failsafeTimeout = setTimeout(() => {
+      if (!mapLoaded) {
+        console.log('Failsafe timeout: Falling back to static interactive map');
+        setMapError(true);
+        setMapLoaded(false);
+      }
+    }, 8000);
+
+    return () => clearTimeout(failsafeTimeout);
   }, [GOOGLE_MAPS_API_KEY]);
 
   // Initialize map when Google Maps is loaded
