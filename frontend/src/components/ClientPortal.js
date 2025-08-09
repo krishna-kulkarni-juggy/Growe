@@ -21,6 +21,7 @@ const ClientPortal = () => {
   const [warehouses, setWarehouses] = useState([]);
   const [leases, setLeases] = useState([]);
   const [leads, setLeads] = useState([]);
+  const [industryNews, setIndustryNews] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
