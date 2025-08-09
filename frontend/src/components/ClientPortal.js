@@ -305,7 +305,15 @@ The automation revolution is not just about replacing human workers—it's about
     setLeads(demoLeads);
     setIndustryNews(demoIndustryNews);
     setLoading(false);
-  }, []);
+  const openNewsModal = (newsItem) => {
+    setSelectedNewsItem(newsItem);
+    setShowNewsModal(true);
+  };
+
+  const closeNewsModal = () => {
+    setShowNewsModal(false);
+    setSelectedNewsItem(null);
+  };
 
   const getDaysUntilExpiration = (endDate) => {
     const today = new Date();
