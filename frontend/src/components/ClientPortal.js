@@ -658,9 +658,13 @@ The automation revolution is not just about replacing human workers—it's about
               <h3 className="text-lg font-medium text-gray-900 mb-4">Latest News Feed</h3>
               <div className="max-h-96 overflow-y-auto space-y-3 pr-2">
                 {industryNews.map((news) => (
-                  <div key={news.id} className={`border rounded-lg p-4 hover:bg-gray-50 transition-colors cursor-pointer ${
-                    news.trending ? 'border-orange-200 bg-orange-25' : 'border-gray-200'
-                  }`}>
+                  <div 
+                    key={news.id} 
+                    className={`border rounded-lg p-4 hover:bg-gray-50 transition-colors cursor-pointer ${
+                      news.trending ? 'border-orange-200 bg-orange-25' : 'border-gray-200'
+                    }`}
+                    onClick={() => openNewsModal(news)}
+                  >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center space-x-2">
                         <span className={`px-2 py-1 text-xs font-medium rounded-full ${
@@ -702,7 +706,13 @@ The automation revolution is not just about replacing human workers—it's about
                         <span className="mx-2">•</span>
                         <span>{new Date(news.published_date).toLocaleDateString()}</span>
                       </div>
-                      <button className="text-blue-600 hover:text-blue-800 text-xs font-medium flex items-center">
+                      <button 
+                        className="text-blue-600 hover:text-blue-800 text-xs font-medium flex items-center"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openNewsModal(news);
+                        }}
+                      >
                         Read More
                         <ArrowRight className="h-3 w-3 ml-1" />
                       </button>
