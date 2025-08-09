@@ -221,6 +221,52 @@ Property Manager: Robert Chen, (555) 234-0002, r.chen@indprop.com
         notes: "Short-term lease with expansion potential",
         lease_agreement: {
           document_name: "Chicago_Logistics_Hub_Lease_2023.pdf",
+          document_content: `
+SHORT-TERM WAREHOUSE LEASE AGREEMENT
+
+Property: Chicago Logistics Hub - Building C
+Address: 2345 Logistics Ave, Chicago, IL 60632
+Landlord: Chicago Industrial Partners
+Tenant: Summit Logistics Inc.
+
+LEASE TERMS:
+- Initial Term: 2 years (April 1, 2023 - March 31, 2025)  
+- Base Rent: $18,000/month + revenue percentage
+- Square Footage: 40,000 sq ft
+- Security Deposit: $36,000
+- Revenue Share: 2% of gross revenue over $1,000,000 annually
+
+REVENUE-BASED RENT STRUCTURE:
+- Base rent applies to first $1M in annual gross revenue
+- Additional rent: 2% of revenue from $1M - $5M
+- Additional rent: 1.5% of revenue over $5M
+- Monthly revenue reporting required by 15th of following month
+
+SHARED FACILITIES:
+- Loading dock: 4 shared dock doors (scheduled access)
+- Common break room and restrooms
+- Shared truck parking area (10 spaces allocated)
+- Common security system and entrance
+
+EXPANSION OPTION:
+- First right to lease adjacent 20,000 sq ft space
+- Same terms and revenue structure apply
+- 60-day advance notice required for expansion
+
+TERMINATION CLAUSES:
+- Either party may terminate with 60-day written notice
+- Month-to-month option available after initial term
+- Early termination fee: 2 months base rent if terminated before 18 months
+
+REPORTING REQUIREMENTS:
+- Monthly revenue reports due by 15th of following month  
+- Annual audited financials required
+- Quarterly business review meetings with landlord
+
+CONTACT INFORMATION:
+Landlord: Chicago Industrial Partners, (555) 345-0001, info@chiplogistics.com  
+Leasing Manager: Sarah Martinez, (555) 345-0002, s.martinez@chiplogistics.com
+`,
           summary: {
             key_terms: [
               "2-year initial term with month-to-month option after",
