@@ -45,6 +45,37 @@ const LeaseAdmin = () => {
         notes: "Standard warehouse lease",
         lease_agreement: {
           document_name: "Summit_LA_Warehouse_Lease_2022.pdf",
+          document_content: `
+COMMERCIAL LEASE AGREEMENT
+
+Property: Summit LA Distribution Center
+Address: 1234 Industrial Blvd, Los Angeles, CA 90021
+Landlord: Property Group 1 LLC
+Tenant: Summit Logistics Inc.
+
+LEASE TERMS:
+- Initial Term: 3 years (Jan 1, 2022 - Dec 31, 2024)
+- Monthly Rent: $25,000 (Year 1), 3% annual escalation
+- Square Footage: 50,000 sq ft
+- Security Deposit: $50,000
+- Use: Warehouse and distribution operations
+
+KEY PROVISIONS:
+1. RENEWAL OPTION: Tenant has automatic renewal option for additional 2 years
+2. MAINTENANCE: Tenant responsible for interior maintenance, landlord for structural
+3. INSURANCE: Tenant must maintain $2M commercial liability insurance
+4. PARKING: 25 dedicated parking spaces included
+5. LOADING DOCKS: 8 dock doors with hydraulic levelers
+
+SPECIAL TERMS:
+- Option to expand to adjacent 25,000 sq ft space with 90-day notice
+- Early termination allowed after Year 2 with 180-day notice and 2-month penalty
+- Annual facility inspection required every December
+
+CONTACT INFORMATION:
+Landlord: Property Group 1 LLC, (555) 123-0001, admin@propgroup1.com
+Property Manager: Jane Wilson, (555) 123-0002, jane.wilson@propgroup1.com
+`,
           summary: {
             key_terms: [
               "3-year initial term with automatic 2-year renewal option",
