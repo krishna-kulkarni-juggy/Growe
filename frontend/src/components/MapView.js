@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { 
   Building, 
   Phone, 
@@ -7,6 +6,71 @@ import {
   MapPin,
   X
 } from 'lucide-react';
+
+// Custom Google Maps Loader to handle async issues
+const loadGoogleMapsScript = (apiKey) => {
+  return new Promise((resolve, reject) => {
+    // Check if Google Maps is already loaded
+    if (window.google && window.google.maps) {
+      resolve(window.google.maps);
+      return;
+    }
+
+    // Check if script is already being loaded
+    if (window.googleMapsLoading) {
+      // Wait for existing load
+      const checkInterval = setInterval(() => {
+        if (window.google && window.google.maps) {
+          clearInterval(checkInterval);
+          resolve(window.google.maps);
+        }
+      }, 100);
+      return;
+    }
+
+    window.googleMapsLoading = true;
+
+    // Create script element
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+    script.async = true;
+    script.defer = true;
+
+    // Handle successful load
+    script.onload = () => {
+      window.googleMapsLoading = false;
+      if (window.google && window.google.maps) {
+        resolve(window.google.maps);
+      } else {
+        // Give it a moment to initialize
+        setTimeout(() => {
+          if (window.google && window.google.maps) {
+            resolve(window.google.maps);
+          } else {
+            reject(new Error('Google Maps failed to initialize'));
+          }
+        }, 1000);
+      }
+    };
+
+    // Handle error
+    script.onerror = () => {
+      window.googleMapsLoading = false;
+      reject(new Error('Failed to load Google Maps script'));
+    };
+
+    // Add to document
+    document.head.appendChild(script);
+
+    // Timeout after 15 seconds
+    setTimeout(() => {
+      if (window.googleMapsLoading) {
+        window.googleMapsLoading = false;
+        reject(new Error('Google Maps loading timeout'));
+      }
+    }, 15000);
+  });
+};
 
 const MapView = () => {
   const [warehouses, setWarehouses] = useState([]);
@@ -16,7 +80,8 @@ const MapView = () => {
   const [loading, setLoading] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState(false);
-  const [scriptLoadTimeout, setScriptLoadTimeout] = useState(false);
+  const [googleMaps, setGoogleMaps] = useState(null);
+  const [mapInstance, setMapInstance] = useState(null);
 
   // Get API key with multiple fallback methods
   const getApiKey = () => {
@@ -28,7 +93,6 @@ const MapView = () => {
       'AIzaSyCwnOPgnwvH3Km70Fnxv-SYpZ9_ocOvNKw'; // Direct fallback
     
     console.log('API Key found:', apiKey ? 'Yes' : 'No');
-    console.log('API Key value:', apiKey);
     return apiKey;
   };
 
@@ -36,7 +100,8 @@ const MapView = () => {
 
   const mapContainerStyle = {
     width: '100%',
-    height: '600px'
+    height: '600px',
+    borderRadius: '8px'
   };
 
   const center = {
@@ -47,8 +112,11 @@ const MapView = () => {
   const mapOptions = {
     zoomControl: true,
     streetViewControl: false,
-    mapTypeControl: false,
+    mapTypeControl: true,
     fullscreenControl: true,
+    scrollwheel: true,
+    gestureHandling: 'auto',
+    mapTypeId: 'roadmap'
   };
 
   useEffect(() => {
