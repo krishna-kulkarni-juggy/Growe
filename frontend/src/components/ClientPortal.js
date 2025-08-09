@@ -765,6 +765,127 @@ The automation revolution is not just about replacing human workers—it's about
           </div>
         </div>
       </div>
+
+      {/* News Details Modal */}
+      {showNewsModal && selectedNewsItem && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-full overflow-y-auto">
+            <div className="p-6">
+              {/* Header */}
+              <div className="flex items-start justify-between mb-6">
+                <div className="flex-1">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                      selectedNewsItem.category === 'Market Trends' ? 'bg-blue-100 text-blue-800' :
+                      selectedNewsItem.category === 'Technology' ? 'bg-green-100 text-green-800' :
+                      selectedNewsItem.category === 'Infrastructure' ? 'bg-purple-100 text-purple-800' :
+                      selectedNewsItem.category === 'Sustainability' ? 'bg-emerald-100 text-emerald-800' :
+                      selectedNewsItem.category === 'Specialized Storage' ? 'bg-indigo-100 text-indigo-800' :
+                      selectedNewsItem.category === 'Labor Market' ? 'bg-yellow-100 text-yellow-800' :
+                      selectedNewsItem.category === 'International' ? 'bg-pink-100 text-pink-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {selectedNewsItem.category}
+                    </span>
+                    {selectedNewsItem.trending && (
+                      <span className="bg-red-100 text-red-800 text-xs font-medium px-2 py-1 rounded-full">
+                        🔥 TRENDING
+                      </span>
+                    )}
+                  </div>
+                  <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                    {selectedNewsItem.title}
+                  </h1>
+                  <div className="flex items-center text-sm text-gray-500 space-x-4">
+                    <span className="flex items-center">
+                      <Newspaper className="h-4 w-4 mr-1" />
+                      {selectedNewsItem.source}
+                    </span>
+                    {selectedNewsItem.author && (
+                      <span>By {selectedNewsItem.author}</span>
+                    )}
+                    <span className="flex items-center">
+                      <Calendar className="h-4 w-4 mr-1" />
+                      {new Date(selectedNewsItem.published_date).toLocaleDateString()}
+                    </span>
+                    <span className="flex items-center">
+                      <Clock className="h-4 w-4 mr-1" />
+                      {selectedNewsItem.read_time}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={closeNewsModal}
+                  className="ml-4 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+
+              {/* Summary */}
+              <div className="mb-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                <h3 className="text-sm font-medium text-blue-800 mb-2">Article Summary</h3>
+                <p className="text-blue-700 text-sm leading-relaxed">
+                  {selectedNewsItem.summary}
+                </p>
+              </div>
+
+              {/* Full Content */}
+              <div className="prose max-w-none">
+                <div className="text-gray-700 leading-relaxed whitespace-pre-line text-sm">
+                  {selectedNewsItem.full_content}
+                </div>
+              </div>
+
+              {/* Tags */}
+              {selectedNewsItem.tags && (
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <h4 className="text-sm font-medium text-gray-900 mb-3">Tags</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedNewsItem.tags.map((tag, index) => (
+                      <span
+                        key={index}
+                        className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Footer */}
+              <div className="mt-6 pt-6 border-t border-gray-200 flex items-center justify-between">
+                <div className="text-xs text-gray-500">
+                  <p>Published by {selectedNewsItem.source}</p>
+                  {selectedNewsItem.author && (
+                    <p>Written by {selectedNewsItem.author}</p>
+                  )}
+                </div>
+                <div className="flex space-x-3">
+                  <button
+                    onClick={closeNewsModal}
+                    className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
+                  >
+                    Close
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center transition-colors"
+                    onClick={() => {
+                      // Simulate sharing functionality
+                      navigator.clipboard.writeText(`${selectedNewsItem.title} - ${window.location.origin}`);
+                      toast.success('Article link copied to clipboard!');
+                    }}
+                  >
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Share Article
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
