@@ -332,8 +332,8 @@ const MapView = () => {
                                 <text x="16" y="20" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">O</text>
                               </svg>
                             `),
-                          scaledSize: new window.google?.maps?.Size(32, 32) || { width: 32, height: 32 },
-                          anchor: new window.google?.maps?.Point(16, 16) || { x: 16, y: 16 }
+                          scaledSize: window.google && window.google.maps ? new window.google.maps.Size(32, 32) : { width: 32, height: 32 },
+                          anchor: window.google && window.google.maps ? new window.google.maps.Point(16, 16) : { x: 16, y: 16 }
                         }}
                         title={`${warehouse.name} - ${warehouse.city}, ${warehouse.state}`}
                       />
