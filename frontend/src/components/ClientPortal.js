@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
+import { toast } from 'react-hot-toast';
 import {
   Building,
   FileText,
@@ -13,7 +14,8 @@ import {
   TrendingUp,
   ExternalLink,
   Newspaper,
-  ArrowRight
+  ArrowRight,
+  X
 } from 'lucide-react';
 
 const ClientPortal = () => {
