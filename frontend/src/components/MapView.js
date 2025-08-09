@@ -225,17 +225,73 @@ const MapView = () => {
     setThreePLs(demoThreePLs);
     setLoading(false);
 
-    // Set a timeout to fall back to static map if interactive map doesn't load within 10 seconds
-    const timeout = setTimeout(() => {
-      if (!mapLoaded) {
-        console.log('Interactive Google Maps timeout - falling back to static map');
+    // Load Google Maps with custom loader
+    loadGoogleMapsScript(GOOGLE_MAPS_API_KEY)
+      .then((maps) => {
+        console.log('Google Maps loaded successfully!');
+        setGoogleMaps(maps);
+        setMapLoaded(true);
+        setMapError(false);
+      })
+      .catch((error) => {
+        console.error('Failed to load Google Maps:', error);
         setMapError(true);
-        setScriptLoadTimeout(true);
-      }
-    }, 10000);
+        setMapLoaded(false);
+      });
+  }, [GOOGLE_MAPS_API_KEY]);
 
-    return () => clearTimeout(timeout);
-  }, [mapLoaded]);
+  // Initialize map when Google Maps is loaded
+  useEffect(() => {
+    if (googleMaps && !mapInstance) {
+      const mapElement = document.getElementById('google-map-container');
+      if (mapElement) {
+        try {
+          const map = new googleMaps.Map(mapElement, {
+            center: center,
+            zoom: 4,
+            ...mapOptions
+          });
+
+          // Add markers
+          warehouses.forEach((warehouse) => {
+            const marker = new googleMaps.Marker({
+              position: { lat: warehouse.lat, lng: warehouse.lng },
+              map: map,
+              title: `${warehouse.name} - ${warehouse.city}, ${warehouse.state}`,
+              icon: {
+                url: warehouse.growe_represented 
+                  ? 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="16" cy="16" r="12" fill="#3B82F6" stroke="#ffffff" stroke-width="3"/>
+                      <text x="16" y="20" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">G</text>
+                    </svg>
+                  `)
+                  : 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="16" cy="16" r="12" fill="#F59E0B" stroke="#ffffff" stroke-width="3"/>
+                      <text x="16" y="20" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">O</text>
+                    </svg>
+                  `),
+                scaledSize: new googleMaps.Size(32, 32),
+                anchor: new googleMaps.Point(16, 16)
+              }
+            });
+
+            // Add click listener
+            marker.addListener('click', () => {
+              handleMarkerClick(warehouse);
+            });
+          });
+
+          setMapInstance(map);
+          console.log('Interactive Google Map initialized successfully!');
+        } catch (error) {
+          console.error('Error initializing map:', error);
+          setMapError(true);
+        }
+      }
+    }
+  }, [googleMaps, warehouses, mapInstance]);
 
   const getThreePLInfo = (threeplId) => {
     return threePLs.find(tpl => tpl.id === threeplId);
