@@ -75,21 +75,148 @@ const ClientPortal = () => {
         id: "1",
         title: "3PL Market Expected to Reach $1.7 Trillion by 2027",
         summary: "Strong e-commerce growth drives unprecedented expansion in third-party logistics sector, creating new opportunities for warehouse operators.",
+        full_content: `
+The third-party logistics (3PL) market is experiencing unprecedented growth, with industry analysts projecting the global market to reach $1.7 trillion by 2027, representing a compound annual growth rate (CAGR) of 8.5% from 2022 to 2027.
+
+KEY DRIVERS OF GROWTH:
+
+E-commerce Explosion: Online retail sales continue to surge, with consumers increasingly expecting faster delivery times and seamless fulfillment experiences. This trend has accelerated since the pandemic and shows no signs of slowing.
+
+Supply Chain Complexity: Modern supply chains have become increasingly complex, with companies seeking specialized expertise to navigate international trade, regulatory compliance, and last-mile delivery challenges.
+
+Technology Integration: Advanced technologies like AI, IoT, and robotic process automation are transforming warehouse operations, making 3PL services more efficient and cost-effective.
+
+REGIONAL MARKET ANALYSIS:
+
+North America: Expected to maintain its position as the largest regional market, driven by robust e-commerce growth and the need for sophisticated cold chain logistics.
+
+Asia-Pacific: Projected to show the fastest growth rate, particularly in China and India, where rapid urbanization and middle-class expansion fuel consumer demand.
+
+Europe: Steady growth expected, with emphasis on sustainable logistics practices and green supply chain solutions.
+
+OPPORTUNITIES FOR 3PL PROVIDERS:
+
+1. Specialized Services: Growing demand for temperature-controlled storage, pharmaceutical logistics, and hazardous materials handling.
+
+2. Technology Adoption: Companies investing in automation and data analytics are seeing significant competitive advantages.
+
+3. Sustainability Focus: Eco-friendly logistics solutions are becoming a key differentiator in client selection.
+
+4. Last-Mile Innovation: Urban fulfillment centers and alternative delivery methods present new revenue streams.
+
+CHALLENGES TO CONSIDER:
+
+- Rising real estate costs in key logistics markets
+- Persistent labor shortages and increasing wage pressures  
+- Need for substantial technology investments
+- Regulatory compliance in international markets
+
+EXPERT PERSPECTIVE:
+"The 3PL industry is at an inflection point," says Maria Rodriguez, Senior Analyst at Supply Chain Insights. "Companies that can successfully integrate advanced technology while maintaining operational flexibility will capture the largest share of this growth."
+
+INVESTMENT IMPLICATIONS:
+This growth trajectory presents significant opportunities for warehouse operators, technology providers, and investors focused on logistics infrastructure. The key will be positioning for the shift toward more automated, sustainable, and customer-centric operations.
+        `,
         source: "Logistics Management",
         category: "Market Trends",
         published_date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
         read_time: "3 min",
-        trending: true
+        trending: true,
+        author: "Jennifer Smith",
+        tags: ["Market Analysis", "E-commerce", "Growth Forecast"]
       },
       {
         id: "2", 
         title: "Automation Revolution Transforms Warehouse Operations",
         summary: "Leading 3PLs invest heavily in robotics and AI technologies to meet growing demand while managing labor shortages.",
+        full_content: `
+The warehouse automation revolution is accelerating at an unprecedented pace, with leading 3PL providers investing billions in robotics, artificial intelligence, and automated systems to transform their operations.
+
+CURRENT STATE OF AUTOMATION:
+
+Market Size: The warehouse automation market is valued at $15.3 billion in 2023 and is expected to reach $30.8 billion by 2028, growing at a CAGR of 15.1%.
+
+Adoption Rates: Currently, only 15% of warehouses globally have implemented significant automation, leaving enormous room for growth and competitive differentiation.
+
+LEADING TECHNOLOGIES:
+
+1. Autonomous Mobile Robots (AMRs)
+   - Reduce picking times by up to 50%
+   - Improve accuracy to 99.9%
+   - Enable 24/7 operations without human intervention
+
+2. Automated Storage and Retrieval Systems (AS/RS)
+   - Maximize vertical space utilization
+   - Reduce labor costs by 60-70%
+   - Eliminate picking errors
+
+3. AI-Powered Warehouse Management Systems
+   - Predictive analytics for demand forecasting
+   - Dynamic routing optimization
+   - Real-time inventory optimization
+
+4. Voice-Directed Operations
+   - Hands-free picking and packing
+   - 15-20% productivity improvement
+   - Reduced training time for new workers
+
+CASE STUDIES:
+
+Amazon Robotics: Deployed over 520,000 robotic units across fulfillment centers, reducing operating expenses by 20% and improving delivery speed.
+
+DHL Supply Chain: Implemented collaborative robots (cobots) that work alongside human workers, increasing productivity by 25% while maintaining employment levels.
+
+UPS: Invested $200 million in automated sorting facilities, processing 100,000 packages per hour with 99.97% accuracy.
+
+LABOR IMPACT AND CONSIDERATIONS:
+
+Job Transformation: While automation eliminates some manual tasks, it creates new roles in robot maintenance, data analysis, and system management.
+
+Skill Development: 3PL providers are investing heavily in retraining programs to help workers transition to higher-skilled positions.
+
+Hybrid Approach: Most successful implementations combine automation with human workers, leveraging the strengths of both.
+
+ROI AND FINANCIAL BENEFITS:
+
+- Typical payback period: 2-4 years
+- Labor cost reduction: 40-60%
+- Accuracy improvement: 99.5%+ error-free operations
+- Space utilization: 40% increase in storage density
+
+CHALLENGES AND BARRIERS:
+
+High Initial Investment: Advanced automation systems require significant upfront capital, often $2-5 million per facility.
+
+Integration Complexity: Existing warehouse management systems may require substantial upgrades or complete replacement.
+
+Change Management: Successful automation requires comprehensive change management programs for both workers and management.
+
+FUTURE OUTLOOK:
+
+The next five years will see continued advancement in:
+- Machine learning algorithms for predictive maintenance
+- Integration of IoT sensors for real-time monitoring
+- Development of fully autonomous warehouse operations
+- Blockchain integration for supply chain transparency
+
+STRATEGIC RECOMMENDATIONS:
+
+For 3PL providers considering automation:
+1. Start with pilot programs in high-volume, repetitive operations
+2. Invest in worker training and development programs
+3. Choose scalable solutions that can grow with business needs
+4. Partner with technology providers that offer comprehensive support
+5. Develop clear ROI metrics and implementation timelines
+
+The automation revolution is not just about replacing human workers—it's about creating more efficient, accurate, and responsive warehouse operations that can meet the demands of modern commerce.
+        `,
         source: "Supply Chain Dive",
         category: "Technology",
         published_date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
         read_time: "5 min",
-        trending: true
+        trending: true,
+        author: "Michael Chen",
+        tags: ["Automation", "Robotics", "AI", "Labor"]
       },
       {
         id: "3",
