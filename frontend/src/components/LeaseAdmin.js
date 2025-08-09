@@ -23,6 +23,8 @@ const LeaseAdmin = () => {
   const [threePLs, setThreePLs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // all, expiring, active
+  const [selectedLease, setSelectedLease] = useState(null);
+  const [showLeaseModal, setShowLeaseModal] = useState(false);
 
   useEffect(() => {
     // Demo data since async operations don't work in this environment
