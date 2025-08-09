@@ -12,7 +12,9 @@ import {
   ChevronRight,
   ExternalLink,
   CheckCircle,
-  X
+  X,
+  FileCheck,
+  Printer
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
