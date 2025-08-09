@@ -572,6 +572,155 @@ const LeaseAdmin = () => {
           </p>
         </div>
       )}
+
+      {/* Lease Details Modal */}
+      {showLeaseModal && selectedLease && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-full overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Lease Agreement Details</h2>
+                <button
+                  onClick={() => setShowLeaseModal(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Basic Information */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-sm text-gray-600">Warehouse</p>
+                      <p className="font-medium">{getWarehouseInfo(selectedLease.warehouse_id)?.name}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">3PL Partner</p>
+                      <p className="font-medium">{getThreePLInfo(selectedLease.threepl_id)?.company_name}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Lease Document</p>
+                      <div className="flex items-center">
+                        <FileText className="h-4 w-4 mr-2 text-blue-600" />
+                        <p className="font-medium text-blue-600">{selectedLease.lease_agreement?.document_name}</p>
+                        <Download className="h-4 w-4 ml-2 text-gray-400" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Financial Summary */}
+                <div className="bg-green-50 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Financial Summary</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-sm text-gray-600">Total Annual Cost</p>
+                      <p className="text-xl font-bold text-green-600">
+                        ${selectedLease.lease_agreement?.summary?.financial_summary?.total_annual_cost?.toLocaleString()}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Escalation Rate</p>
+                      <p className="font-medium">{selectedLease.lease_agreement?.summary?.financial_summary?.escalation_rate}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Security Deposit</p>
+                      <p className="font-medium">${selectedLease.lease_agreement?.summary?.financial_summary?.deposit_amount?.toLocaleString()}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Key Terms */}
+              <div className="mt-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Key Lease Terms</h3>
+                <div className="bg-blue-50 rounded-lg p-4">
+                  <ul className="space-y-2">
+                    {selectedLease.lease_agreement?.summary?.key_terms?.map((term, index) => (
+                      <li key={index} className="flex items-start">
+                        <ChevronRight className="h-4 w-4 text-blue-600 mt-0.5 mr-2 flex-shrink-0" />
+                        <span className="text-sm text-gray-700">{term}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Action Items */}
+              <div className="mt-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Action Items</h3>
+                <div className="space-y-3">
+                  {selectedLease.lease_agreement?.summary?.action_items?.map((item, index) => (
+                    <div key={index} className={`border rounded-lg p-4 ${
+                      item.priority === 'critical' ? 'border-red-300 bg-red-50' :
+                      item.priority === 'high' ? 'border-orange-300 bg-orange-50' :
+                      item.priority === 'medium' ? 'border-yellow-300 bg-yellow-50' :
+                      'border-blue-300 bg-blue-50'
+                    }`}>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center">
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getPriorityColor(item.priority)}`}>
+                              {item.priority.toUpperCase()} PRIORITY
+                            </span>
+                            {item.status === 'completed' && (
+                              <CheckCircle className="h-4 w-4 text-green-600 ml-2" />
+                            )}
+                          </div>
+                          <h4 className="font-medium text-gray-900 mt-2">{item.description}</h4>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Due: {new Date(item.due_date).toLocaleDateString()}
+                          </p>
+                        </div>
+                        {item.status !== 'completed' && (
+                          <button
+                            onClick={() => markActionItemComplete(selectedLease.id, index)}
+                            className="ml-4 px-3 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-md hover:bg-green-200"
+                          >
+                            Mark Complete
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Additional Fees */}
+              <div className="mt-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Additional Fees & Responsibilities</h3>
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex flex-wrap gap-2">
+                    {selectedLease.lease_agreement?.summary?.financial_summary?.additional_fees?.map((fee, index) => (
+                      <span key={index} className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-full">
+                        {fee}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-end space-x-3">
+                <button
+                  onClick={() => setShowLeaseModal(false)}
+                  className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
+                >
+                  Close
+                </button>
+                <button
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Download PDF
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
