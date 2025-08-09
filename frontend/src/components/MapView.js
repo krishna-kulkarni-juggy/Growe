@@ -302,63 +302,6 @@ const MapView = () => {
     setSidebarOpen(true);
   };
 
-  const getMarkerIcon = (warehouse) => {
-    if (!window.google || !window.google.maps) {
-      return null; // Return null if Google Maps isn't loaded yet
-    }
-
-    return {
-      url: warehouse.growe_represented 
-        ? 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="16" cy="16" r="14" fill="#3B82F6" stroke="#ffffff" stroke-width="3"/>
-            <path d="M16 8L24 13L16 18L8 13L16 8Z" fill="#ffffff"/>
-            <text x="16" y="28" text-anchor="middle" fill="#3B82F6" font-size="8" font-weight="bold">G</text>
-          </svg>
-        `)
-        : 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="16" cy="16" r="14" fill="#F59E0B" stroke="#ffffff" stroke-width="3"/>
-            <path d="M16 8L24 13L16 18L8 13L16 8Z" fill="#ffffff"/>
-            <text x="16" y="28" text-anchor="middle" fill="#F59E0B" font-size="8" font-weight="bold">O</text>
-          </svg>
-        `),
-      scaledSize: new window.google.maps.Size(32, 32),
-      anchor: new window.google.maps.Point(16, 32)
-    };
-  };
-
-  const onMapLoad = () => {
-    console.log('Google Maps loaded successfully!');
-    setMapLoaded(true);
-    setMapError(false);
-  };
-
-  const onMapError = (error) => {
-    console.error('Google Maps failed to load:', error);
-    setMapLoaded(false);
-    setMapError(true);
-  };
-
-  const onScriptLoad = () => {
-    console.log('Google Maps script loaded!');
-    // Additional check to ensure the map actually renders
-    setTimeout(() => {
-      if (window.google && window.google.maps) {
-        setMapLoaded(true);
-        setMapError(false);
-      } else {
-        console.warn('Google Maps script loaded but window.google.maps not available');
-        setMapError(true);
-      }
-    }, 1000);
-  };
-
-  const onScriptError = (error) => {
-    console.error('Google Maps script error:', error);
-    setMapError(true);
-  };
-
   if (loading) {
     return (
       <div className="p-6">
