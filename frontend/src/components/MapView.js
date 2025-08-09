@@ -62,13 +62,13 @@ const loadGoogleMapsScript = (apiKey) => {
     // Add to document
     document.head.appendChild(script);
 
-    // Timeout after 15 seconds
+    // Timeout after 8 seconds instead of 15
     setTimeout(() => {
       if (window.googleMapsLoading) {
         window.googleMapsLoading = false;
         reject(new Error('Google Maps loading timeout'));
       }
-    }, 15000);
+    }, 8000);
   });
 };
 
