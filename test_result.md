@@ -270,10 +270,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Navigation System" # Critical role-based access control issue
+    - "Enhanced Lease Data Structure" # Backend model needs enhancement
+    - "Industry News API" # Missing backend endpoints
+    - "Lease Action Items API" # Missing action items management
   stuck_tasks:
     - "Navigation System" # Role-based access control not enforced
-  test_all: true
+    - "Enhanced Lease Data Structure" # Backend-frontend data model mismatch
+    - "Industry News API" # Backend implementation needed
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
