@@ -68,9 +68,113 @@ const ClientPortal = () => {
       }
     ];
 
+    const demoIndustryNews = [
+      {
+        id: "1",
+        title: "3PL Market Expected to Reach $1.7 Trillion by 2027",
+        summary: "Strong e-commerce growth drives unprecedented expansion in third-party logistics sector, creating new opportunities for warehouse operators.",
+        source: "Logistics Management",
+        category: "Market Trends",
+        published_date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+        read_time: "3 min",
+        trending: true
+      },
+      {
+        id: "2", 
+        title: "Automation Revolution Transforms Warehouse Operations",
+        summary: "Leading 3PLs invest heavily in robotics and AI technologies to meet growing demand while managing labor shortages.",
+        source: "Supply Chain Dive",
+        category: "Technology",
+        published_date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+        read_time: "5 min",
+        trending: true
+      },
+      {
+        id: "3",
+        title: "West Coast Port Congestion Creates Inland Opportunities",
+        summary: "Shippers diversify distribution strategies, boosting demand for inland warehouse facilities across the Midwest and South.",
+        source: "FreightWaves",
+        category: "Infrastructure",
+        published_date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+        read_time: "4 min",
+        trending: false
+      },
+      {
+        id: "4",
+        title: "Same-Day Delivery Drives Urban Warehouse Demand",
+        summary: "Retailers seek last-mile facilities closer to consumers, creating premium pricing for urban warehouse space.",
+        source: "Modern Materials Handling",
+        category: "Market Trends",
+        published_date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
+        read_time: "3 min",
+        trending: false
+      },
+      {
+        id: "5",
+        title: "Sustainability Initiatives Reshape 3PL Industry",
+        summary: "Environmental regulations and corporate ESG goals drive adoption of green warehousing practices and electric vehicle fleets.",
+        source: "Inbound Logistics",
+        category: "Sustainability",
+        published_date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+        read_time: "6 min",
+        trending: false
+      },
+      {
+        id: "6",
+        title: "Cold Storage Shortage Creates Investment Opportunities",
+        summary: "Growing demand for temperature-controlled facilities outpaces supply, leading to record-high lease rates in key markets.",
+        source: "Cold Chain Federation",
+        category: "Specialized Storage",
+        published_date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
+        read_time: "4 min",
+        trending: true
+      },
+      {
+        id: "7",
+        title: "Data Analytics Transforms 3PL Decision Making",
+        summary: "Advanced analytics platforms help logistics providers optimize routes, predict demand, and improve customer satisfaction.",
+        source: "Logistics Viewpoints",
+        category: "Technology",
+        published_date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        read_time: "5 min",
+        trending: false
+      },
+      {
+        id: "8",
+        title: "Labor Challenges Drive Wage Growth in Warehousing",
+        summary: "Persistent worker shortages push warehouse wages up 15% year-over-year, impacting 3PL profitability and pricing.",
+        source: "Warehouse Management",
+        category: "Labor Market",
+        published_date: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000),
+        read_time: "4 min",
+        trending: false
+      },
+      {
+        id: "9",
+        title: "Cross-Border E-Commerce Fuels 3PL Expansion",
+        summary: "International online shopping growth creates new opportunities for 3PLs specializing in customs and international fulfillment.",
+        source: "Global Trade Magazine",
+        category: "International",
+        published_date: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000),
+        read_time: "7 min",
+        trending: false
+      },
+      {
+        id: "10",
+        title: "Micro-Fulfillment Centers Gain Momentum",
+        summary: "Compact automated facilities in urban areas enable faster delivery times and reduce transportation costs for retailers.",
+        source: "Retail Logistics",
+        category: "Urban Logistics",
+        published_date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
+        read_time: "3 min",
+        trending: false
+      }
+    ];
+
     setWarehouses(demoWarehouses);
     setLeases(demoLeases); 
     setLeads(demoLeads);
+    setIndustryNews(demoIndustryNews);
     setLoading(false);
   }, []);
 
