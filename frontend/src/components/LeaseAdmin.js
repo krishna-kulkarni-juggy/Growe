@@ -130,6 +130,50 @@ Property Manager: Jane Wilson, (555) 123-0002, jane.wilson@propgroup1.com
         notes: "Prime location with good access",
         lease_agreement: {
           document_name: "Atlantic_Newark_Industrial_Lease_2021.pdf",
+          document_content: `
+INDUSTRIAL WAREHOUSE LEASE AGREEMENT
+
+Property: Atlantic Newark Industrial Hub  
+Address: 9101 Commerce Dr, Newark, NJ 07102
+Landlord: Industrial Properties LLC
+Tenant: Atlantic Supply Chain Corp.
+
+LEASE TERMS:
+- Term: 5 years (March 1, 2021 - February 28, 2026)
+- Base Rent: $35,000/month (fixed for 2 years, then 2.5% annual increases)
+- Square Footage: 75,000 sq ft
+- Security Deposit: $70,000
+- Additional Rent: Property taxes, insurance, common area maintenance
+
+FACILITY SPECIFICATIONS:
+- Clear height: 32 feet
+- Loading docks: 12 dock doors with truck wells
+- Drive-in doors: 2 grade-level doors
+- Parking: 50 dedicated spaces
+- Office space: 5,000 sq ft included
+
+LANDLORD RESPONSIBILITIES:
+- Structural maintenance and roof repairs
+- HVAC system maintenance and replacement
+- Exterior building maintenance
+- Common area lighting and maintenance
+
+TENANT RESPONSIBILITIES:
+- Interior maintenance and repairs
+- Utilities (electric, gas, water, sewer)
+- Interior lighting and HVAC operation
+- Security system operation
+
+SPECIAL PROVISIONS:
+- Right of first refusal on adjacent 25,000 sq ft space
+- No early termination clause - full term required
+- Annual rent reconciliation for property taxes and insurance
+- Tenant improvements allowance: $50,000
+
+CONTACT INFORMATION:
+Landlord: Industrial Properties LLC, (555) 234-0001, leasing@indprop.com
+Property Manager: Robert Chen, (555) 234-0002, r.chen@indprop.com
+`,
           summary: {
             key_terms: [
               "5-year fixed term with no early termination clause",
