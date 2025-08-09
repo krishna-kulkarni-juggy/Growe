@@ -392,130 +392,95 @@ const MapView = () => {
 
       <div className="relative">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          {/* Interactive Google Maps with Enhanced Static Fallback */}
+          {/* Native Google Maps Implementation */}
           <div className="mb-6">
             <div className="text-center mb-3">
               <h3 className="text-lg font-semibold text-gray-900">🗺️ Interactive 3PL Warehouse Map</h3>
-              <p className="text-sm text-gray-600">Zoom, pan, and click markers for detailed warehouse information</p>
+              <p className="text-sm text-gray-600">
+                {mapLoaded ? 
+                  "Fully interactive Google Maps - Zoom, pan, and click markers for details" :
+                  mapError ? 
+                    "Enhanced static map with clickable markers" :
+                    "Loading interactive Google Maps..."
+                }
+              </p>
             </div>
             
             <div className="relative mx-auto" style={{maxWidth: '1000px'}}>
-              {/* Try Interactive Google Maps in background */}
-              <div style={{display: 'none'}}>
-                <LoadScript 
-                  googleMapsApiKey={GOOGLE_MAPS_API_KEY}
-                  onLoad={() => {
-                    console.log('Google Maps JavaScript API loaded successfully!');
-                    setMapLoaded(true);
-                    setMapError(false);
-                  }}
-                  onError={(error) => {
-                    console.error('Google Maps script error:', error);
-                    setMapError(true);
-                  }}
-                  libraries={[]}
-                >
-                  <GoogleMap
-                    mapContainerStyle={{
-                      width: '100%',
-                      height: '600px',
-                      borderRadius: '8px'
-                    }}
-                    center={center}
-                    zoom={4}
-                    options={{
-                      zoomControl: true,
-                      streetViewControl: false,
-                      mapTypeControl: true,
-                      fullscreenControl: true,
-                      scrollwheel: true,
-                      gestureHandling: 'auto',
-                      mapTypeId: 'roadmap'
-                    }}
-                    onLoad={(map) => {
-                      console.log('Interactive Google Map loaded successfully!');
-                      setMapLoaded(true);
-                      setMapError(false);
-                    }}
-                  >
-                    {warehouses.map((warehouse) => (
-                      <Marker
-                        key={warehouse.id}
-                        position={{ lat: warehouse.lat, lng: warehouse.lng }}
-                        onClick={() => handleMarkerClick(warehouse)}
-                        title={`${warehouse.name} - ${warehouse.city}, ${warehouse.state}`}
-                      />
-                    ))}
-                  </GoogleMap>
-                </LoadScript>
-              </div>
-
-              {/* Enhanced Static Map with Interactive Features */}
-              <div className="relative">
-                <img 
-                  src={`https://maps.googleapis.com/maps/api/staticmap?size=1000x600&zoom=4&center=39.8283,-98.5795&maptype=roadmap&markers=color:blue%7Clabel:G%7Csize:mid%7C34.0522,-118.2437&markers=color:orange%7Clabel:O%7Csize:mid%7C40.7357,-74.1724&markers=color:blue%7Clabel:G%7Csize:mid%7C41.8781,-87.6298&markers=color:orange%7Clabel:O%7Csize:mid%7C32.7767,-96.7970&markers=color:blue%7Clabel:G%7Csize:mid%7C47.6062,-122.3321&markers=color:orange%7Clabel:O%7Csize:mid%7C25.7617,-80.1918&key=${GOOGLE_MAPS_API_KEY}`}
-                  alt="Interactive Google Maps showing 3PL warehouse locations"
-                  className="rounded-lg shadow-lg border w-full h-auto block"
+              {mapLoaded && !mapError ? (
+                // Native Interactive Google Maps
+                <div 
+                  id="google-map-container"
+                  className="rounded-lg shadow-lg border"
+                  style={mapContainerStyle}
                 />
-                
-                {/* Interactive Clickable Overlays */}
-                <div className="absolute top-0 left-0 w-full h-full">
-                  {warehouses.map((warehouse) => {
-                    let left, top;
-                    switch(warehouse.city) {
-                      case 'Los Angeles': left = '12%'; top = '62%'; break;
-                      case 'Seattle': left = '8%'; top = '25%'; break;
-                      case 'Chicago': left = '62%'; top = '45%'; break;
-                      case 'Dallas': left = '48%'; top = '68%'; break;
-                      case 'Newark': left = '82%'; top = '38%'; break;
-                      case 'Miami': left = '84%'; top = '78%'; break;
-                      default: left = '50%'; top = '50%'; break;
-                    }
-                    
-                    return (
-                      <div
-                        key={warehouse.id}
-                        className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
-                        style={{ left, top }}
-                        onClick={() => handleMarkerClick(warehouse)}
-                        title={`Click for details: ${warehouse.name}`}
-                      >
-                        <div className="relative">
-                          {/* Invisible clickable area */}
-                          <div className="w-10 h-10 rounded-full bg-transparent hover:bg-blue-200 hover:bg-opacity-30 transition-all duration-200 flex items-center justify-center"></div>
-                          
-                          {/* Visible marker overlay */}
-                          <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full border-2 border-white shadow-lg ${
-                            warehouse.growe_represented ? 'bg-blue-600' : 'bg-orange-500'
-                          } flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
-                            <span className="text-white text-xs font-bold">
-                              {warehouse.growe_represented ? 'G' : 'O'}
-                            </span>
-                          </div>
-                          
-                          {/* Hover tooltip */}
-                          <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10">
-                            {warehouse.name}
+              ) : mapError ? (
+                // Enhanced Static Map Fallback
+                <div className="relative">
+                  <img 
+                    src={`https://maps.googleapis.com/maps/api/staticmap?size=1000x600&zoom=4&center=39.8283,-98.5795&maptype=roadmap&markers=color:blue%7Clabel:G%7Csize:mid%7C34.0522,-118.2437&markers=color:orange%7Clabel:O%7Csize:mid%7C40.7357,-74.1724&markers=color:blue%7Clabel:G%7Csize:mid%7C41.8781,-87.6298&markers=color:orange%7Clabel:O%7Csize:mid%7C32.7767,-96.7970&markers=color:blue%7Clabel:G%7Csize:mid%7C47.6062,-122.3321&markers=color:orange%7Clabel:O%7Csize:mid%7C25.7617,-80.1918&key=${GOOGLE_MAPS_API_KEY}`}
+                    alt="Interactive Google Maps showing 3PL warehouse locations"
+                    className="rounded-lg shadow-lg border w-full h-auto block"
+                  />
+                  
+                  {/* Interactive Clickable Overlays */}
+                  <div className="absolute top-0 left-0 w-full h-full">
+                    {warehouses.map((warehouse) => {
+                      let left, top;
+                      switch(warehouse.city) {
+                        case 'Los Angeles': left = '12%'; top = '62%'; break;
+                        case 'Seattle': left = '8%'; top = '25%'; break;
+                        case 'Chicago': left = '62%'; top = '45%'; break;
+                        case 'Dallas': left = '48%'; top = '68%'; break;
+                        case 'Newark': left = '82%'; top = '38%'; break;
+                        case 'Miami': left = '84%'; top = '78%'; break;
+                        default: left = '50%'; top = '50%'; break;
+                      }
+                      
+                      return (
+                        <div
+                          key={warehouse.id}
+                          className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
+                          style={{ left, top }}
+                          onClick={() => handleMarkerClick(warehouse)}
+                          title={`Click for details: ${warehouse.name}`}
+                        >
+                          <div className="relative">
+                            <div className="w-10 h-10 rounded-full bg-transparent hover:bg-blue-200 hover:bg-opacity-30 transition-all duration-200 flex items-center justify-center"></div>
+                            <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full border-2 border-white shadow-lg ${
+                              warehouse.growe_represented ? 'bg-blue-600' : 'bg-orange-500'
+                            } flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
+                              <span className="text-white text-xs font-bold">
+                                {warehouse.growe_represented ? 'G' : 'O'}
+                              </span>
+                            </div>
+                            <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10">
+                              {warehouse.name}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
 
-                {/* Zoom Controls Simulation */}
-                <div className="absolute top-4 right-4 bg-white rounded shadow-md">
-                  <div className="flex flex-col">
-                    <button className="p-2 hover:bg-gray-100 border-b text-gray-600 font-bold text-lg">+</button>
-                    <button className="p-2 hover:bg-gray-100 text-gray-600 font-bold text-lg">−</button>
+                  <div className="absolute bottom-4 left-4 bg-white bg-opacity-90 rounded px-2 py-1 text-xs text-gray-600">
+                    📍 Enhanced Static Map
                   </div>
                 </div>
-
-                {/* Map Type Control Simulation */}
-                <div className="absolute bottom-4 left-4 bg-white bg-opacity-90 rounded px-2 py-1 text-xs text-gray-600">
-                  📍 Interactive Google Maps
+              ) : (
+                // Loading State
+                <div className="relative">
+                  <div className="w-full h-96 bg-gray-100 rounded-lg border-2 border-gray-200 flex items-center justify-center animate-pulse">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                      <p className="text-gray-600 font-medium">Loading Interactive Google Maps...</p>
+                      <p className="text-xs text-gray-500 mt-2">
+                        {googleMaps ? 'Initializing map...' : 'Loading Google Maps API...'}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Map Legend */}
@@ -534,10 +499,15 @@ const MapView = () => {
               </div>
             </div>
 
-            {/* Interactive Features Info */}
+            {/* Status Indicator */}
             <div className="mt-3 text-center">
               <p className="text-xs text-gray-500">
-                🖱️ Click markers for warehouse details • Real Google Maps with interactive overlays
+                {mapLoaded && !mapError ? 
+                  "🔄 Fully Interactive: Native Google Maps with zoom, pan, and click functionality" :
+                  mapError ? 
+                    "📍 Static Interactive: Click markers for warehouse details" :
+                    "⏳ Loading: Attempting to load interactive Google Maps..."
+                }
               </p>
             </div>
           </div>
