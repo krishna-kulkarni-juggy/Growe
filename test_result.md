@@ -214,6 +214,54 @@ frontend:
         agent: "testing"
         comment: "Google Maps backend functionality fully working. GET /api/warehouses returns 13 warehouses with valid lat/lng coordinates, proper data structure for map display. GET /api/3pls returns 14 3PL companies with complete contact info and services. Minor: warehouse-3PL linking has data inconsistency (UUID vs ObjectId) but doesn't affect core map functionality. Data quality score: 100% - excellent for map display."
 
+  - task: "Enhanced Lease Data Structure"
+    implemented: false
+    working: false
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "CRITICAL GAP: Backend Lease Pydantic model doesn't support enhanced fields (lease_agreement, summary, action_items, financial_summary). Frontend LeaseAdmin component uses enhanced demo data with lease agreements, action items, and financial summaries, but backend cannot persist or retrieve this data. Enhanced lease POST requests accepted but enhanced fields are stripped out."
+
+  - task: "Industry News API"
+    implemented: false
+    working: false
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "MISSING FEATURE: Industry news endpoints (/api/industry-news) not implemented. Client portal displays comprehensive industry news feed with 10+ articles, trending functionality, and category filtering, but this is frontend demo data only. Backend needs industry news model and CRUD endpoints."
+
+  - task: "Lease Action Items API"
+    implemented: false
+    working: false
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "MISSING FEATURE: Lease action items management endpoints not implemented. Frontend supports action item tracking with priorities, due dates, and status updates, but backend has no endpoints for /api/leases/{id}/action-items GET/PUT operations."
+
+  - task: "Enhanced Lease Filtering"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Basic lease filtering working correctly. GET /api/leases/expiring returns expiring leases. Status and date sorting parameters accepted by endpoints. Performance excellent (21ms response time). Ready to support enhanced filtering once enhanced data model is implemented."
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
