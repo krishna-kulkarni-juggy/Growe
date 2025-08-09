@@ -270,6 +270,47 @@ const LeaseAdmin = () => {
     }
   };
 
+  const viewLeaseDetails = (lease) => {
+    setSelectedLease(lease);
+    setShowLeaseModal(true);
+  };
+
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case 'critical': return 'bg-red-100 text-red-800 border-red-300';
+      case 'high': return 'bg-orange-100 text-orange-800 border-orange-300';
+      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+      case 'low': return 'bg-blue-100 text-blue-800 border-blue-300';
+      default: return 'bg-gray-100 text-gray-800 border-gray-300';
+    }
+  };
+
+  const markActionItemComplete = (leaseId, actionIndex) => {
+    setLeases(prevLeases => 
+      prevLeases.map(lease => {
+        if (lease.id === leaseId) {
+          const updatedActionItems = [...lease.lease_agreement.summary.action_items];
+          updatedActionItems[actionIndex] = {
+            ...updatedActionItems[actionIndex],
+            status: 'completed'
+          };
+          return {
+            ...lease,
+            lease_agreement: {
+              ...lease.lease_agreement,
+              summary: {
+                ...lease.lease_agreement.summary,
+                action_items: updatedActionItems
+              }
+            }
+          };
+        }
+        return lease;
+      })
+    );
+    toast.success('Action item marked as complete');
+  };
+
   const filteredLeases = leases.filter(lease => {
     if (filter === 'expiring') {
       return getDaysUntilExpiration(lease.end_date) <= 180 && getDaysUntilExpiration(lease.end_date) >= 0;
