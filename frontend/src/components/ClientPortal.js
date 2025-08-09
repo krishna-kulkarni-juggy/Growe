@@ -624,7 +624,11 @@ The automation revolution is not just about replacing human workers—it's about
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {industryNews.filter(news => news.trending).slice(0, 2).map((news) => (
-                  <div key={news.id} className="border border-orange-200 rounded-lg p-4 bg-orange-50 hover:bg-orange-100 transition-colors">
+                  <div 
+                    key={news.id} 
+                    className="border border-orange-200 rounded-lg p-4 bg-orange-50 hover:bg-orange-100 transition-colors cursor-pointer"
+                    onClick={() => openNewsModal(news)}
+                  >
                     <div className="flex items-start justify-between mb-2">
                       <span className="px-2 py-1 bg-orange-200 text-orange-800 text-xs font-medium rounded-full">
                         {news.category}
@@ -634,7 +638,7 @@ The automation revolution is not just about replacing human workers—it's about
                         {news.read_time}
                       </div>
                     </div>
-                    <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2">
+                    <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-blue-600 transition-colors">
                       {news.title}
                     </h4>
                     <p className="text-sm text-gray-600 mb-3 line-clamp-2">
